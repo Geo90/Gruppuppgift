@@ -1,4 +1,3 @@
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
 public class App {
@@ -8,13 +7,11 @@ public class App {
 		
 		JFrame frame = new MainFrame("Testing Media Library");
 		
-		frame.setSize(700, 500);
+		frame.setSize(650, 600);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-
-		
+			
 
 	}
 
