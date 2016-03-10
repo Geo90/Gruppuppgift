@@ -14,12 +14,11 @@ public class MainFrame extends JFrame {
 
 		// Set Layoutmanager
 		setLayout(new BorderLayout());
-
 		westPanel = new WestPanel();
 		eastPanel = new EastPanel();
+		
 		// Add Swing components to frames content pane
 		Container c = getContentPane();
-
 		c.add(westPanel, BorderLayout.WEST);
 		c.add(eastPanel, BorderLayout.EAST);
 

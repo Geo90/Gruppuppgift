@@ -40,9 +40,7 @@ public class WestPanel extends JPanel {
 		setLayout(new GridBagLayout());
 
 		GridBagConstraints gbc = new GridBagConstraints();
-		// gbc.insets = new Insets(15,15,15,15);
 
-		/////// First Column
 		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.weightx = 0.5;
 		gbc.weighty = 0.5;
