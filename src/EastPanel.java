@@ -17,6 +17,10 @@ public class EastPanel extends JPanel {
 	private JButton searchBtn;
 	private JButton refreshSearchBtn;
 	private JButton borrowBtn;
+	private JTextField searchID;
+	private JLabel searchLbl;
+	private JTextArea searchArea;
+	private JTextField mediaToBorrow;
 
 	EastPanel() {
 		Dimension size = getPreferredSize();
@@ -25,12 +29,12 @@ public class EastPanel extends JPanel {
 
 		setBorder(BorderFactory.createTitledBorder("Library Information"));
 
-		JTextField searchID = new JTextField("Search ID");
+		searchID = new JTextField("Search ID");
 		searchBtn = new JButton("Search");
-		JLabel searchLbl = new JLabel("Search result:");
-		JTextArea searchArea = new JTextArea(".....", 20, 25);
+		searchLbl = new JLabel("Search result:");
+		searchArea = new JTextArea(".....", 20, 25);
 		refreshSearchBtn = new JButton("Refresh");
-		JTextField mediaToBorrow = new JTextField("Enter Media ID to borrow");
+		mediaToBorrow = new JTextField("Enter Media ID to borrow");
 		borrowBtn = new JButton("Borrow");
 
 		setLayout(new GridBagLayout());
@@ -87,13 +91,13 @@ public class EastPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == searchBtn) {
-
+				searchArea.setText("Testing searchBtn....");
 			}
 			if (e.getSource() == refreshSearchBtn) {
-
+				searchArea.setText("Testing refreshSearchBtn....");
 			}
 			if (e.getSource() == borrowBtn) {
-
+				searchArea.setText("Testing borrowBtn....");
 			}
 		}
 	}

@@ -17,6 +17,10 @@ public class WestPanel extends JPanel {
 	private JButton refreshBtn;
 	private JButton logInBtn;
 	private JButton returnBtn;
+	private JTextField enterID;
+	private JLabel borrowedLbl;
+	private JTextArea borrowedArea;
+	private JTextField mediaToReturn;
 
 	WestPanel() {
 		Dimension size = getPreferredSize();
@@ -25,12 +29,12 @@ public class WestPanel extends JPanel {
 
 		setBorder(BorderFactory.createTitledBorder("User Information"));
 
-		JTextField enterID = new JTextField("Enter ID");
+		enterID = new JTextField("Enter ID");
 		logInBtn = new JButton("Log in");
-		JLabel borrowedLbl = new JLabel("Media you have borrowed:");
-		JTextArea borrowedArea = new JTextArea(".....", 20, 25);
+		borrowedLbl = new JLabel("Media you have borrowed:");
+		borrowedArea = new JTextArea(".....", 20, 25);
 		refreshBtn = new JButton("Refresh");
-		JTextField mediaToReturn = new JTextField("Enter Media ID to return");
+		mediaToReturn = new JTextField("Enter Media ID to return");
 		returnBtn = new JButton("Return");
 
 		setLayout(new GridBagLayout());
@@ -77,7 +81,7 @@ public class WestPanel extends JPanel {
 
 	private void addButtonListeners() {
 		ButtonListener listener = new ButtonListener();
-		
+
 		logInBtn.addActionListener(listener);
 		refreshBtn.addActionListener(listener);
 		returnBtn.addActionListener(listener);
@@ -89,15 +93,15 @@ public class WestPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == logInBtn) {
-
+				borrowedArea.setText("Testing logInBtn....");
 			}
 			if (e.getSource() == refreshBtn) {
-
+				borrowedArea.setText("Testing refreshBtn....");
 			}
 			if (e.getSource() == returnBtn) {
+				borrowedArea.setText("Testing returnBtn....");
 
 			}
-			
 
 		}
 
