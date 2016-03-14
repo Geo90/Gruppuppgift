@@ -25,6 +25,15 @@ public abstract class Media {
 	
 	public boolean borrowed(){
 		//Hur ska man avgöra ifall en bok är utlånad eller inte?
+		/*
+		 * Man gör såhär:
+		 * 
+		 * this.borrowed = true;
+		 * kalla metoden setBorrowedStatus istället för borrowed
+		 * Fixa set och get metoder till alla instansvariabler
+		 * \Sebbe 
+		 * 
+		 */
 	}
 
 	public boolean equals(Object obj) {
