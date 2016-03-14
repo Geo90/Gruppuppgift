@@ -20,7 +20,7 @@ import collections.List;
 
 public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	private Comparator<K> comparator;
-	private BSTNode<K, V> tree;
+	public BSTNode<K, V> tree;
 	private int size;
 
 	/**
@@ -45,7 +45,37 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	public BSTNode<K, V> root() {
 		return tree;
 	}
-
+	public BSTNode<K,V> rotateLeft(BSTNode<K,V> node) {
+		BSTNode<K,V> rootNode = node.right;
+		node.right = rootNode.left;
+		rootNode.left = node;
+		return rootNode;
+	}
+	public BSTNode<K,V> rotateRight(BSTNode<K,V> node) {
+		BSTNode<K,V> rootNode = node.left;
+		node.left = rootNode.right;
+		rootNode.right = node;
+		return rootNode;
+	}
+	public BSTNode<K,V> balanceLeft(BSTNode<K,V> node) {
+		if (height(node.left) - height(node.right) >= 2) {
+		if (height(node.left.left) - height(node.left.right) == -1) {
+		node.left = rotateLeft(node.left);
+		}
+		node = rotateRight(node);
+		}
+		return node;
+	}
+	public BSTNode<K,V> balanceRight(BSTNode<K,V> node) {
+		if (height(node.left) - height(node.right) <= -2) {
+		if (height(node.right.left) - height(node.right.right) == 1) {
+		node.right = rotateRight(node.right);
+		}
+		node = rotateLeft(node);
+		}
+		return node;
+	}
+	
 	/**
 	 * Returns the value of the key 
 	 * @param key the key 

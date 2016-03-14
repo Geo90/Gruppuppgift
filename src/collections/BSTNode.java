@@ -7,7 +7,7 @@ package collections;
  * @param <K> key
  * @param <V> value
  */
-class BSTNode<K, V> {
+	public class BSTNode<K, V> {
 	K key;
 	V value;
 	BSTNode<K, V> left;

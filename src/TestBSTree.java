@@ -5,6 +5,11 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 
 import collections.*;
+/**
+ * Testklass för BinarySearchTree i användning med Member objekt. 
+ * @author Sebastian Sologuren & Benjamin Sejdic
+ *
+ */
 public class TestBSTree {
 	
 	private BinarySearchTree<String,Member> memberList = readMembers("filer/Lantagare.txt");
@@ -12,6 +17,11 @@ public class TestBSTree {
 	public TestBSTree(){
 		
 	}
+	/**
+	 * 
+	 * @param filename filen vars text ska göras om till String värden.
+	 * @return res ett BinarySearchTree<String,Member> objekt 
+	 */
 	public static BinarySearchTree<String,Member> readMembers(String filename) {
 		BinarySearchTree<String,Member> res = new BinarySearchTree<String,Member>();
 		Member member;
@@ -32,7 +42,9 @@ public class TestBSTree {
 		}
 		return res;
 	}
-	
+	public void test(){
+		memberList.root().showTree();
+	}
 	public static void main(String[] args){
 		TestBSTree t = new TestBSTree();
 		Iterator<Member> iter = t.memberList.iterator();
@@ -51,6 +63,22 @@ public class TestBSTree {
 		System.out.println("före return loan "+list);
 		memberTest.returnLoan("kalle anka");
 		System.out.println("efter "+list);
+		t.test();//GLÖM INTE TA BORT PUBLIC MODIFIER VISIBILITY FRÅN CLASS BSTNODE
+		t.memberList.tree= t.memberList.balanceLeft(t.memberList.root());
+		t.test();
+		t.memberList.tree = t.memberList.balanceRight(t.memberList.root());
+		t.test();
+		t.test();//GLÖM INTE TA BORT PUBLIC MODIFIER VISIBILITY FRÅN CLASS BSTNODE
+		t.memberList.tree= t.memberList.balanceLeft(t.memberList.root());
+		t.test();
+		t.memberList.tree = t.memberList.balanceRight(t.memberList.root());
+		t.test();
+		t.memberList.tree= t.memberList.balanceLeft(t.memberList.root());
+		t.test();
+		t.memberList.tree = t.memberList.balanceRight(t.memberList.root());
+		t.test();
+//		t.memberList.tree = t.memberList.rotateRight(t.memberList.root());
+//		t.test();
 	}
 
 
