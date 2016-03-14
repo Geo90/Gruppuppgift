@@ -47,6 +47,7 @@ public class Member {
 	public void addLoan(String mediaObj){//ändra till Media sen
 		if(loanList==null){
 			loanList = new ArrayList<String>();//ändra typ till Media sen
+			loanList.add(mediaObj);
 		}
 		else{
 			loanList.add(mediaObj);
@@ -66,6 +67,8 @@ public class Member {
 	public ArrayList<String> getLoanList(){//ändra till Media sen
 		return loanList;
 	}
-	
+	public String toString(){
+		return this.name+" "+this.memberID+" "+this.phoneNumber;
+	}
 	
 }
