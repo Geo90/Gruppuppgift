@@ -23,10 +23,10 @@ public class Hashtable {
 	//The size of the hashtable
 	private int size = 0;
 	
-	/*
+	
 	//Media-object in order to retrieve media
-	Media media = new Media();
-	*/
+	Media media;
+	
 	
 	/**
 	 * Constructor that creates the hashtable from the file filename
@@ -94,6 +94,15 @@ public class Hashtable {
 	 * Different tests to see if the information contained in the hashtable can be retrieved 
 	 */
 	private void testClass(){
+		
+
+		/*-----------------------------------------------
+		 * 
+		 * Tessting hashtable operations and retrieval 
+		 * of information
+		 * 
+		 *-----------------------------------------------
+		 */
 		System.out.println("Test if hashtable contains key 277877: " + hash.containsKey("277877"));
 		System.out.println("Test if hashtable contains key 000000: " + hash.containsKey("000000"));
 		System.out.println();		
@@ -135,6 +144,33 @@ public class Hashtable {
 			System.out.println(s);
 			System.out.println();
 		}
+		
+		
+		/*-----------------------------------------------
+		 * 
+		 * Tessting communication /w media and subclasses
+		 * 
+		 *-----------------------------------------------
+		 */
+		System.out.println("/*-----------------------------------------------");
+		System.out.println("Testing communication /w media and subclasses");
+		System.out.println("/*-----------------------------------------------");
+		
+		//Checking if hashtable contains the specified key
+		for(int i = 0; i<keys.length; i++){
+			System.out.println("Contains key " + keys[i]+": " + doesContain(keys[i]));
+			sList = (ArrayList<String>) hash.get(keys[i]);
+			System.out.println("Media: " + sList.get(0));
+			//sList.removeFirst();
+			//Retrieving a media object from the media-class
+			media = getMedia(keys[i]);
+			
+			media.setBorrowedStatus(false);
+			System.out.println("toString: " + media.toString());	
+			System.out.println();
+		}
+
+		
 	}
 	
 	/**
@@ -149,6 +185,27 @@ public class Hashtable {
 		else
 			return false;
 	}
+	
+	public boolean doesContain(String key){
+		return hash.containsKey(key);
+	}
+	
+	public Media getMedia(String key){
+		ArrayList<String> contents = new ArrayList<String>();
+		ArrayList<String> temp = new ArrayList<String>();
+		contents = (ArrayList<String>) hash.get(key);
+		
+		if(isDVD(contents.get(0))){
+			contents.removeFirst();
+			media = new DVD(contents);
+		}else{
+			contents.removeFirst();
+			media = new Book(contents);
+		}
+		return media;
+	}
+	
+	
 	
 	public static void main(String[] args) {
 		Hashtable ht = new Hashtable("filer/Media.txt");
