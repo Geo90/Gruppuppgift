@@ -1,5 +1,4 @@
 
-
 // Klassen Media är abstrakt och måste därför ärvas. Böcker och dvd-filmer
 // ska representeras av klasser vilka ärver Media-klassen.
 public abstract class Media {
@@ -9,6 +8,7 @@ public abstract class Media {
 	private boolean borrowed;
 
 	public Media() {
+		
 	}
 	
 	public String getId() {
@@ -44,4 +44,8 @@ public abstract class Media {
 		return mediaId.equals(media.getId());
 	}
 	
+	public String toString(){
+		return "MediaID: " + getId() + " Titel: " + getTitle()
+				+ " År: " + getYear();
+	}	
 }

@@ -1,6 +1,4 @@
-
 import java.util.ArrayList;
-
 
 public class DVD extends Media{
 	private String[] actors;
@@ -50,9 +48,8 @@ public class DVD extends Media{
 		for(int i = 0; i < actors.length; i++){
 			res += actors[i] + " ";
 		}
-		return "MediaID: " + super.getId() + " Titel: " + super.getTitle() + " År: " + super.getYear() + " Skådespelare: " + res;
+		return super.toString() + " Skådespelare: " + res;
 
-	}
-	
+	}	
 }
 

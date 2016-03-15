@@ -20,7 +20,6 @@ public class Book extends Media{
 	}
 	
 	public String toString(){
-		return "MediaID: " + super.getId() + " Författare: " + getAuthor() + " Titel: " + super.getTitle() + " År: " + super.getYear();
+		return super.toString() + " Författare: " + getAuthor();
 	}
-
 }
