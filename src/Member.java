@@ -12,7 +12,7 @@ import collections.*;
 
 public class Member {
 	private String memberID, name, phoneNumber;
-	private ArrayList<String> loanList;//ändra typ till Media sen
+	private ArrayList<Media> loanList;//ändra typ till Media sen
 	
 	/**
 	 * Konstruerar en låntagare med personuppgifter samt ett ID.
@@ -44,16 +44,16 @@ public class Member {
 	public String getPhoneNumber(){
 		return this.phoneNumber;
 	}
-	public void addLoan(String mediaObj){//ändra till Media sen
+	public void addLoan(Media mediaObj){//ändra till Media sen
 		if(loanList==null){
-			loanList = new ArrayList<String>();//ändra typ till Media sen
+			loanList = new ArrayList<Media>();//ändra typ till Media sen
 			loanList.add(mediaObj);
 		}
 		else{
 			loanList.add(mediaObj);
 		}
 	}
-	public void returnLoan(String mediaObj){//ändra typ till Media sen
+	public void returnLoan(Media mediaObj){//ändra typ till Media sen
 		int indexOf =(loanList.indexOf(mediaObj));
 		if(indexOf != -1){
 			//loanList.get(indexOf).//mediaObj//.setBorrowedStatus(false);
@@ -64,7 +64,7 @@ public class Member {
 			JOptionPane.showMessageDialog(null, "Det här objektet finns inte i din lånelista.");
 		}
 	}
-	public ArrayList<String> getLoanList(){//ändra till Media sen
+	public ArrayList<Media> getLoanList(){//ändra till Media sen
 		return loanList;
 	}
 	public String toString(){
