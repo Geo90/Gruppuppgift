@@ -63,22 +63,8 @@ public class TestBSTree {
 		System.out.println("före return loan "+list);
 		memberTest.returnLoan("kalle anka");
 		System.out.println("efter "+list);
-		t.test();//GLÖM INTE TA BORT PUBLIC MODIFIER VISIBILITY FRÅN CLASS BSTNODE
-		t.memberList.tree= t.memberList.balanceLeft(t.memberList.root());
 		t.test();
-		t.memberList.tree = t.memberList.balanceRight(t.memberList.root());
-		t.test();
-		t.test();//GLÖM INTE TA BORT PUBLIC MODIFIER VISIBILITY FRÅN CLASS BSTNODE
-		t.memberList.tree= t.memberList.balanceLeft(t.memberList.root());
-		t.test();
-		t.memberList.tree = t.memberList.balanceRight(t.memberList.root());
-		t.test();
-		t.memberList.tree= t.memberList.balanceLeft(t.memberList.root());
-		t.test();
-		t.memberList.tree = t.memberList.balanceRight(t.memberList.root());
-		t.test();
-//		t.memberList.tree = t.memberList.rotateRight(t.memberList.root());
-//		t.test();
+
 	}
 
 
