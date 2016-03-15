@@ -1,23 +1,14 @@
-import java.util.ArrayList;
-
 
 public class Book extends Media{
 	private String author;
 
-	public Book(ArrayList<String> list) {
-		super.setId(list.get(1));
-		super.setTitle(list.get(3));
-		super.setYear(list.get(4));
-		setAuthor(list.get(2));
-		super.setBorrowedStatus(false);
+	public Book(String mediaId, String author) {
+		super(mediaId);
+		this.author = author;
 	}
 	
 	public String getAuthor(){
 		return author;
-	}
-	
-	public void setAuthor(String author){
-		this.author = author;
 	}
 
 }

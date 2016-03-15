@@ -1,5 +1,4 @@
 
-
 // Klassen Media är abstrakt och måste därför ärvas. Böcker och dvd-filmer
 // ska representeras av klasser vilka ärver Media-klassen.
 public abstract class Media {
@@ -8,35 +7,33 @@ public abstract class Media {
 	private String year;
 	private boolean borrowed;
 
-	public Media() {
+	public Media(String mediaId) {
+		this.mediaId = mediaId;
 	}
-	
+
 	public String getId() {
 		return mediaId;
-	}
-	
-	public void setId(String mediaId){
-		this.mediaId = mediaId;
 	}
 	
 	public String getTitle() {
 		return title;
 	}
 	
-	public void setTitle(String title){
-		this.title = title;
-	}
-	
-	public String getYear() {
+	public String year() {
 		return year;
 	}
 	
-	public void setYear(String year){
-		this.year = year;
-	}
-	
-	public void setBorrowedStatus(boolean status){
-		this.borrowed = status;
+	public boolean borrowed(){
+		//Hur ska man avgöra ifall en bok är utlånad eller inte?
+		/*
+		 * Man gör såhär:
+		 * 
+		 * this.borrowed = true;
+		 * kalla metoden setBorrowedStatus istället för borrowed
+		 * Fixa set och get metoder till alla instansvariabler
+		 * \Sebbe 
+		 * 
+		 */
 	}
 
 	public boolean equals(Object obj) {
