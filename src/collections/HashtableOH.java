@@ -1,10 +1,13 @@
 package collections;
+import ArrayList;
+import Entry;
+
 import java.util.Iterator;
 
 
 /**
  * Hashtabellen använder öppen hashing
- * @author Rolf Axelsson
+ * @author Danial Mahmoud
  */
 public class HashtableOH<K,V> implements Map<K,V> { 
     private LinkedList<Entry<K,V>>[] table;
@@ -105,18 +108,40 @@ public class HashtableOH<K,V> implements Map<K,V> {
 	}
 
 	public void clear() {
-		for (int i = 0; i < table.length; i++) {
-			table[i].clear();
-		}
+		Entry<K, V> entry;
+		for(int i = 0; i < table.length; i++){ 
+            for( int k = 0; k < table[i].size(); k++ ) { 
+            	entry = table[i].get(k);
+            	entry.key = null;
+            	entry.value = null;
+            }
+
+        }
 		size = 0;
 	}
 
 	public Iterator<K> keys() {
-		return null;
+		ArrayList<K> list = new ArrayList<K>();
+		for(int i = 0; i < table.length; i++){
+			for(int k = 0; k < table[i].size(); k++){
+				if(table[i].get(k).key != null){
+					list.add(table[i].get(k).key);
+				}
+			}
+		}
+		return list.iterator();
 	}
 
 	public Iterator<V> values() {
-        return null;
+		ArrayList<V> list = new ArrayList<V>();
+		for(int i = 0; i < table.length; i++){
+			for(int k = 0; k < table[i].size(); k++){
+				if(table[i].get(k).value != null){
+					list.add(table[i].get(k).value);
+				}
+			}
+		}
+		return list.iterator();
 	}
     
     public static void main(String[] args) {
