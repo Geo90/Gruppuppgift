@@ -76,10 +76,8 @@ public class HashtableOH_temp<K, V> implements Map<K, V> {
 				size--;
 				return table[hashIndex(key)].get(counter).value;
 			}
-
 			counter++;
 		}
-
 		return null;
 	}
 

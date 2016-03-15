@@ -1,7 +1,5 @@
 package collections;
-import ArrayList;
-import Entry;
-
+import java.util.*;
 import java.util.Iterator;
 
 
@@ -55,19 +53,14 @@ public class HashtableOH<K,V> implements Map<K,V> {
     }
 
 	public V get(K key) {
-        Entry<K,V> entry;
-		V res = null;
-        for(int i = 0; i < table.length; i++){ // iterera genom arrayen
-            for( int k = 0; k < table[i].size(); k++ ) { // iterara genom den länkade listan
-            	entry = table[i].get(k);
-            	if(entry.key == key){
-            		res = entry.value;
-            	}
-            }
-
-        }
-        return res;
-
+		int hashIndex = hashIndex(key);
+		Entry<K, V> entry = new Entry<K, V>(key, null);
+		for (int pos = 0; pos < table[hashIndex].size(); pos++) {
+			if (table[hashIndex].get(pos).equals(entry)) {
+				return table[hashIndex].get(pos).value;
+			}
+		}
+		return null;
 	}
 
 	public V remove(K key) {
