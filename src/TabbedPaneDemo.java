@@ -22,6 +22,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 
+@SuppressWarnings("serial")
 public class TabbedPaneDemo extends JPanel {
 	private JPanel map = new JPanel();
     private JTabbedPane tabbedPane = new JTabbedPane();
