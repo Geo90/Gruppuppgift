@@ -4,6 +4,17 @@ public class DVD extends Media{
 	private String[] actors;
 	private String name;
 	
+	public DVD(String title){
+		super.setTitle(title);
+	}
+	
+	public DVD(String[] actors){
+		this.actors = new String[actors.length];
+		for(int i = 0; i < actors.length; i++){
+			this.actors[i] = actors[i];
+		}
+	}
+	
 	public DVD(ArrayList<String> list) {
 		super.setId(list.get(0));
 		super.setTitle(list.get(1));
