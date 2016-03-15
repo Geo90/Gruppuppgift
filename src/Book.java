@@ -4,10 +4,10 @@ public class Book extends Media{
 	private String author;
 
 	public Book(ArrayList<String> list) {
-		super.setId(list.get(1));
-		super.setTitle(list.get(3));
-		super.setYear(list.get(4));
-		setAuthor(list.get(2));
+		super.setId(list.get(0));
+		setAuthor(list.get(1));
+		super.setTitle(list.get(2));
+		super.setYear(list.get(3));
 		super.setBorrowedStatus(false);
 	}
 	
@@ -22,4 +22,5 @@ public class Book extends Media{
 	public String toString(){
 		return super.toString() + " Författare: " + getAuthor();
 	}
+
 }

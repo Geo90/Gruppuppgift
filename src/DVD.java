@@ -5,17 +5,19 @@ public class DVD extends Media{
 	private String name;
 	
 	public DVD(ArrayList<String> list) {
-		super.setId(list.get(1));
-		super.setTitle(list.get(2));
-		super.setYear(list.get(3));
+		super.setId(list.get(0));
+		super.setTitle(list.get(1));
+		super.setYear(list.get(2));
 		String[] actors;
-		int length = 0;
-		for(int i = 4; i < list.size(); i++){
-			length++;
+		int nbrOfActors = 0;
+		for(int i = 3; i < list.size(); i++){
+			nbrOfActors++;
 		}
-		actors = new String[length];
-		for(int i = 4; i < list.size(); i++){
-			actors[i] = list.get(i);
+		int k = 0;
+		actors = new String[nbrOfActors];
+		for(int i = 3; i < list.size(); i++){
+			actors[k] = list.get(i);
+			k++;
 		}
 		setActors(actors);
 		super.setBorrowedStatus(false);
@@ -24,12 +26,18 @@ public class DVD extends Media{
 	
 	public String getActor(String name){
 		String res = "";
+		int pos = 0;
 		for(int i = 0; i < actors.length; i++){
 			if(name.equals(actors[i])){
 				res = actors[i];
+				pos++;
 			}
+			pos++;
 		}
-		return res;
+		if(res.equals("")){
+			return "Skådespelaren finns inte";
+		}
+		return "Du letade efter: " + res + " som finns på position " + pos + " i vektorn actors.";
 	}
 	
 	public void setActors(String[] names){
@@ -37,10 +45,18 @@ public class DVD extends Media{
 		for(int i = 0; i < names.length; i++){
 			actors[i] = names[i];
 		}
-		
 	}
-	public String[] getActors(){
-		return actors;
+	
+	public String getActors(){
+		String res = "";
+		for(int i = 0; i < actors.length; i++){
+			if(i < actors.length-1){
+				res += actors[i] + "\n";
+			}else{
+				res += actors[i];
+			}
+		}
+		return res;
 	}
 	
 	public String toString(){
@@ -52,4 +68,3 @@ public class DVD extends Media{
 
 	}	
 }
-
