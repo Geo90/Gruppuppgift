@@ -19,6 +19,7 @@ public class ArrayList<E> implements List<E> {
 		for(int i = 0; i<elements.length; i++) {
 			temp[i] = elements[i];
 		}
+		length = 2*elements.length;
 		elements = temp;
 	}
 	
