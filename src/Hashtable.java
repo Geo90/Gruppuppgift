@@ -17,7 +17,7 @@ public class Hashtable {
 
 	
 	//Stores the information of many objects of type ArrayList<String>
-	private HashtableOH hash;
+	private HashtableOH<String, Integer> hash;
 	//Stores the information about one object
 	private ArrayList<String> m;
 	//The size of the hashtable
@@ -25,6 +25,7 @@ public class Hashtable {
 	//The file
 	private String filename;
 	//List that contains media-objects
+	private ArrayList<ArrayList<Media>> arrayMediaList;
 	private ArrayList<Media> mediaList;
 	
 	
@@ -69,8 +70,8 @@ public class Hashtable {
 	 * @param filename
 	 * @return HashtableOH<String, ArrayList<String>> - the hashtable that has been created from the file
 	 */
-	public HashtableOH<String, Media> readMedia(String filename) {
-		HashtableOH<String, Media> res = new HashtableOH<String, Media>(size);
+	public HashtableOH<String, Integer> readMedia(String filename) {
+		HashtableOH<String, Integer> res = new HashtableOH<String, Integer>(size);
 		String[] parts;
 		String text;
 		try {
@@ -83,13 +84,10 @@ public class Hashtable {
 					m.add((parts[i]));
 				}
 
-				System.out.println("m get year: " + m.get(4));
-				Media med = getMedia(m);
-				System.out.println("mediaToString: " + med.toString());
-				//System.out.println("year: " + med.getYear());
-				res.put(med.getId(), med);
-				System.out.println(hash.hashIndex(med.getId()));
-				mediaList.add(hash.hashIndex(med.getId()), med);
+				Media med = getMedia(m);				
+				res.put(med.getId(), hash.hashIndex(med.getId()));
+				mediaList.add(med);
+				arrayMediaList.add(hash.hashIndex(med.getId()), mediaList);
 				
 				text = br.readLine();
 			}
