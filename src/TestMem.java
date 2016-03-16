@@ -1,4 +1,4 @@
-package testGui;
+
 
 public class TestMem {
 private String name;

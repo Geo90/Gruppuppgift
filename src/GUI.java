@@ -1,4 +1,4 @@
-package testGui;
+
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 /**
  * This class is responsible for the Graphical User interface.
  * 
- * @author Erik Lewis Åkerman, Kablai Tokhi 15/3 - 2016
+ * @author Erik Lewis ï¿½kerman, Kablai Tokhi 15/3 - 2016
  *
  */
 public class GUI {
@@ -162,7 +162,7 @@ public class GUI {
 	/**
 	 * This class implements ActionListener and handles the action performed when a 
 	 * button is pressed.
-	 * @author Erik Lewis Åkerman, Kablai Tokhi
+	 * @author Erik Lewis ï¿½kerman, Kablai Tokhi
 	 *
 	 */
 	public void nameandmedia(){
@@ -235,7 +235,7 @@ public class GUI {
 					}
 				}
 			if(flag == 1){
-					JOptionPane.showMessageDialog(null,"Fel ID, pröva igen");
+					JOptionPane.showMessageDialog(null,"Fel ID, prï¿½va igen");
 					theTabbedPane.setEnabledAt(1, false);
 					theTabbedPane.setEnabledAt(2, false);
 				}
@@ -290,7 +290,7 @@ public class GUI {
 						flag3= 1;
 					}
 				}if(flag3 == 1){
-					JOptionPane.showMessageDialog(null, "Median finns inte lånad");
+					JOptionPane.showMessageDialog(null, "Median finns inte lï¿½nad");
 				}
 			}
 			if (e.getSource() == refreshBtn) {
