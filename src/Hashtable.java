@@ -40,7 +40,9 @@ public class Hashtable {
 	public Hashtable(String filename) {
 		this.filename = filename;
 		size = getFileRowsCount(filename);
+		System.out.println(size);
 		hash = new HashtableOH(size);
+		arrayMediaList = new ArrayList<ArrayList<Media>>(size);
 		mediaList = new ArrayList<Media>(size);
 		
 		hash = readMedia(filename);
@@ -84,10 +86,18 @@ public class Hashtable {
 					m.add((parts[i]));
 				}
 
-				Media med = getMedia(m);				
-				res.put(med.getId(), hash.hashIndex(med.getId()));
+				Media med = getMedia(m);
+				int hashIndex = hash.hashIndex(med.getId());
+				res.put(med.getId(), hashIndex);
 				mediaList.add(med);
-				arrayMediaList.add(hash.hashIndex(med.getId()), mediaList);
+				
+				if(arrayMediaList.get(hashIndex) == null)
+					arrayMediaList.add(hashIndex, mediaList);
+				else{
+					mediaList = getMediaList(hashIndex);
+					mediaList.add(med);
+					arrayMediaList.add(hashIndex, mediaList);
+				}
 				
 				text = br.readLine();
 			}
@@ -96,6 +106,23 @@ public class Hashtable {
 			System.out.println(e);
 		}
 		return res;
+	}
+	
+	public Media getMedia(String key){
+		ArrayList<Media> mediaList = new ArrayList<Media>();
+		Media media = new Media();
+		mediaList = arrayMediaList.get(hash.get(key));
+		for(int i = 0; i<mediaList.size(); i++){
+			if(key.equals(mediaList.get(i).getId()))
+					media = mediaList.get(i);
+			else
+				media = null;
+		}
+		return media;
+	}
+	
+	public ArrayList<Media> getMediaList(int hashIndex){
+		return arrayMediaList.get(hashIndex);
 	}
 	
 	public String toString() {

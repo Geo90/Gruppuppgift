@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 public class ArrayList<E> implements List<E> {
 	private E[] elements;
 	private int size;
+	private int length;
 	
 	/**
 	 * Används för att utöka arrayens storlek då den är full
@@ -31,12 +32,11 @@ public class ArrayList<E> implements List<E> {
 	public ArrayList(int initialCapacity) {
 		initialCapacity = Math.max(1, initialCapacity);
 		elements = (E[])new Object[initialCapacity];
+		length = initialCapacity;
 	}
 
 	public void add(int index, E element) {
-//		System.out.println("Elements length: " + elements.length);
-//		System.out.println("Size: " + size);
-		if(index<0 || index>size)
+		if(index<0 || index>length)
 			throw new IndexOutOfBoundsException();
 		if(size==elements.length)
 			grow();
@@ -75,24 +75,6 @@ public class ArrayList<E> implements List<E> {
 		return element;
 	}
 	
-//	public E remove(int n) {
-//		if (n == 0) {
-//            Integer value = (Integer)list.getData();
-//            list = list.getNext();
-//        } else {
-//            ObjectNode node = list;
-//            int currentPos = 0;
-//            while (currentPos < n - 1) {
-//                currentPos++;
-//                node = node.getNext();
-//            }
-//            value = (Integer)node.getNext().getData();
-//            node.setNext(node.getNext().getNext());
-//        }
-//        System.out.println(list);
-//        System.out.println("Borttaget element: nr " + n + " med värdet " + value);
-//    }
-
 	public E removeFirst() {
 		return remove(0);
 	}
@@ -109,7 +91,7 @@ public class ArrayList<E> implements List<E> {
 	}
 
 	public E get(int index) {
-		if (index < 0 || index > size) {
+		if (index < 0 || index > length) {
 			throw new IndexOutOfBoundsException();
 		}
 		return elements[index];
@@ -146,7 +128,7 @@ public class ArrayList<E> implements List<E> {
 	}
 
 	public int size() {
-		return size;
+		return length;
 	}
 	
 	public String toString() {
@@ -162,24 +144,7 @@ public class ArrayList<E> implements List<E> {
 
 	public Iterator<E> iterator() {
 		return new Iter();
-//		return new Iterator<E>() {
-//			private int index=0;
-//			
-//			public boolean hasNext() {
-//				return index<size;
-//			}
-//			
-//			public E next() {
-//				if(index==size)
-//					throw new NoSuchElementException();
-//				return elements[index++];
-//			}
-//			
-//			public void remove() {
-//				throw new UnsupportedOperationException();
-//			}
-//		};
-	}
+		}
 	
 	private class Iter implements Iterator<E> {
 		private int index=0;
