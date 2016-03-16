@@ -22,6 +22,10 @@ public class Hashtable {
 	private ArrayList<String> m;
 	//The size of the hashtable
 	private int size = 0;
+	//The file
+	private String filename;
+	//List that contains media-objects
+	private ArrayList<Media> mediaList;
 	
 	
 	//Media-object in order to retrieve media
@@ -33,7 +37,11 @@ public class Hashtable {
 	 * @param filename - file that contains information about the objects
 	 */
 	public Hashtable(String filename) {
-		hash = new HashtableOH(getFileRowsCount(filename));
+		this.filename = filename;
+		size = getFileRowsCount(filename);
+		hash = new HashtableOH(size);
+		mediaList = new ArrayList<Media>(size);
+		
 		hash = readMedia(filename);
 	}
 
@@ -61,8 +69,8 @@ public class Hashtable {
 	 * @param filename
 	 * @return HashtableOH<String, ArrayList<String>> - the hashtable that has been created from the file
 	 */
-	public HashtableOH<String, ArrayList<String>> readMedia(String filename) {
-		HashtableOH<String, ArrayList<String>> res = new HashtableOH<String, ArrayList<String>>(size);
+	public HashtableOH<String, Media> readMedia(String filename) {
+		HashtableOH<String, Media> res = new HashtableOH<String, Media>(size);
 		String[] parts;
 		String text;
 		try {
@@ -74,7 +82,15 @@ public class Hashtable {
 				for (int i = 0; i < parts.length; i++) {
 					m.add((parts[i]));
 				}
-				res.put(m.get(1), m);
+
+				System.out.println("m get year: " + m.get(4));
+				Media med = getMedia(m);
+				System.out.println("mediaToString: " + med.toString());
+				//System.out.println("year: " + med.getYear());
+				res.put(med.getId(), med);
+				System.out.println(hash.hashIndex(med.getId()));
+				mediaList.add(hash.hashIndex(med.getId()), med);
+				
 				text = br.readLine();
 			}
 			br.close();
@@ -83,9 +99,9 @@ public class Hashtable {
 		}
 		return res;
 	}
-
+	
 	public String toString() {
-		testClass();
+		//testClass();
 		String s = "";
 		return s;
 	}
@@ -93,12 +109,13 @@ public class Hashtable {
 	/**
 	 * Different tests to see if the information contained in the hashtable can be retrieved 
 	 */
+	
 	private void testClass(){
 		
 
 		/*-----------------------------------------------
 		 * 
-		 * Tessting hashtable operations and retrieval 
+		 * Testing hashtable operations and retrieval 
 		 * of information
 		 * 
 		 *-----------------------------------------------
@@ -144,14 +161,14 @@ public class Hashtable {
 			System.out.println(s);
 			System.out.println();
 		}
-		
+	}
 		
 		/*-----------------------------------------------
 		 * 
-		 * Tessting communication /w media and subclasses
+		 * Testing communication /w media and subclasses
 		 * 
 		 *-----------------------------------------------
-		 */
+		 /
 		System.out.println("/*-----------------------------------------------");
 		System.out.println("Testing communication /w media and subclasses");
 		System.out.println("/*-----------------------------------------------");
@@ -168,10 +185,49 @@ public class Hashtable {
 			media.setBorrowedStatus(false);
 			System.out.println("toString: " + media.toString());	
 			System.out.println();
+			
+			/*-----------------------------------------------
+			 * 
+			 * Testing storing same information again in the same hashtable
+			 * 
+			 *-----------------------------------------------
+			 /
+			hash.list();
+			hash = readMedia(filename, hash);
+			hash.list();
 		}
-
-		
 	}
+	*/
+	
+	/**
+	 * Reads the text-file filename and creates the hashtable that stores the contents of the text-file
+	 * @param filename
+	 * @return HashtableOH<String, ArrayList<String>> - the hashtable that has been created from the file
+	 */
+	/*public HashtableOH<String, ArrayList<String>> readMedia(String filename) {
+		HashtableOH<String, ArrayList<String>> res = new HashtableOH<String, ArrayList<String>>(size);
+		String[] parts;
+		String text;
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"));
+			text = br.readLine();
+			while (text != null) {
+				m = new ArrayList();
+				parts = text.split(";");
+				for (int i = 0; i < parts.length; i++) {
+					m.add((parts[i]));
+				}
+				System.out.println(res.put(m.get(1), m));
+				text = br.readLine();
+			}
+			br.close();
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+		return res;
+	}
+*/
+
 	
 	/**
 	 * Checks to see if media is DVD if media is not DVD then it has to be a Book
@@ -190,26 +246,28 @@ public class Hashtable {
 		return hash.containsKey(key);
 	}
 	
-	public Media getMedia(String key){
-		ArrayList<String> contents = new ArrayList<String>();
-		ArrayList<String> temp = new ArrayList<String>();
-		contents = (ArrayList<String>) hash.get(key);
-		
+	public Media getMedia(ArrayList<String> contents){
 		if(isDVD(contents.get(0))){
 			contents.removeFirst();
+			System.out.println("getMedia year: " + contents.get(3));
 			media = new DVD(contents);
 		}else{
 			contents.removeFirst();
+			System.out.println("getMedia year: " + contents.get(3));
 			media = new Book(contents);
 		}
 		return media;
 	}
 	
-	
-	
+	/*
+	public boolean isBorrowed(String mediaID){
+		
+	}
+	*/
 	public static void main(String[] args) {
 		Hashtable ht = new Hashtable("filer/Media.txt");
 		System.out.println(ht.toString());
+		ht.testClass();
 	}
 }
 

@@ -19,9 +19,10 @@ public class HashtableOH<K,V> implements Map<K,V> {
         }
     }
     
-    private int hashIndex( K key ) {
+    public int hashIndex( K key ) {
         int hashCode = key.hashCode();
         hashCode = hashCode % table.length;
+        //System.out.println("hashCode in HashtableOH: " + hashCode);
         return ( hashCode < 0 ) ? -hashCode : hashCode;
     }
     
@@ -32,6 +33,7 @@ public class HashtableOH<K,V> implements Map<K,V> {
         int index = table[ hashIndex ].indexOf( entry );
         if( index == -1 ) {
             table[ hashIndex ].addFirst( entry );
+            res = table[ hashIndex].get(0).value;
             size++;
         }
         else {
