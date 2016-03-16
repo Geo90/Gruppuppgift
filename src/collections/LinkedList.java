@@ -65,6 +65,26 @@ public class LinkedList<E> implements List<E>, Iterable<E> {
 		}
 
 	}
+	
+	public E add2(int index, E data) {
+		E res = null;
+		if (index < 0 || index > size()) {
+			throw new IndexOutOfBoundsException();
+		}
+		if (index == 0) {
+			list = new ListNode<E>(data, list);
+			res = list.getData();
+		} else {
+			ListNode<E> node = locate(index - 1);			
+			ListNode<E> newNode = new ListNode<E>(data, node.getNext());
+			node.setNext(newNode);
+			res = node.getData();
+			
+		}
+		return res; 
+
+	}
+	
 
 	public E removeFirst() {
 		return remove(0);

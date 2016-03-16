@@ -37,7 +37,7 @@ public class HashtableOH<K,V> implements Map<K,V> {
             size++;
         }
         else {
-        	res = table[ hashIndex ].set( index, entry ).value;
+        	res = table[ hashIndex ].add2( index, entry ).value;
         }
         return res;
     }

@@ -148,7 +148,7 @@ public class ArrayList<E> implements List<E> {
 	 * @return det ersatta elementet 
 	 */
 	public E set(int index, E element) {
-		if (index < 0 || index > size) {
+		if (index < 0 || index > length) {
 			throw new IndexOutOfBoundsException();
 		}
 		E prevElement = elements[index];
