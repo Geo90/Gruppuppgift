@@ -58,11 +58,13 @@ public class TestBSTree {
 		memberTest.setName("Benjamin");
 		memberTest.setPhoneNumber("040");
 		System.out.println(memberTest.toString());
-		Media kalleAnka = new Book("Kalle Anka","Kalle");
+		Book kalleAnka = new Book("Kalle Anka","Kalle","a","b");
 		memberTest.addLoan(kalleAnka);
 		ArrayList<Media> list = memberTest.getLoanList();
 		System.out.println("före return loan "+list);
+		System.out.println("size"+list.size());
 		memberTest.returnLoan(kalleAnka);
+		System.out.println("size"+list.size());
 		System.out.println("efter "+list);
 		t.test();
 

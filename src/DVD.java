@@ -12,35 +12,20 @@ public class DVD extends Media{
 	private String[] actors;
 	
 	/**
-	 * Skapar ett DVD-objekt med id:t mediaId
-	 * @param mediaId
-	 */
-	public DVD(String mediaId){
-		super(mediaId);
-	}
-	
-	/**
-	 * Skapar ett DVD-objekt med titeln title, och id:t mediaId
-	 * @param title
-	 * @param mediaId
-	 */
-	public DVD(String title, String mediaId){
-		super(mediaId);
-		super.setTitle(title);
-	}
-	
-	/**
-	 * Skapar ett DVD-objekt med actors.length antal skådespelare och id:t mediaId
+	 * Skapar ett DVD-objekt
 	 * @param actors
 	 * @param mediaId
+	 * @param title
+	 * @param year
 	 */
-	public DVD(String[] actors, String mediaId){
-		super(mediaId);
+	public DVD(String[] actors, String mediaId, String title, String year){
+		super(mediaId, title,year,false);
 		this.actors = new String[actors.length];
 		for(int i = 0; i < actors.length; i++){
 			this.actors[i] = actors[i];
 		}
 	}
+
 	
 	/**
 	 * Denna konstruktor tar emot en ArrayList som innehåller mediaId, titel, år och lånestatus.
@@ -72,20 +57,13 @@ public class DVD extends Media{
 	 * @param name
 	 * @return skådespelarnamnet om den finns i objektet
 	 */
-	public String getActor(String name){
-		String res = "";
-		int pos = 0;
+	public boolean containsActor(String name){
 		for(int i = 0; i < actors.length; i++){
 			if(name.equals(actors[i])){
-				res = actors[i];
-				pos++;
+				return true;
 			}
-			pos++;
-		}
-		if(res.equals("")){
-			return "Skådespelaren finns inte";
-		}
-		return "Du letade efter: " + res + " som finns på position " + pos + " i vektorn actors.";
+		}	
+		return false;
 	}
 	
 	/**
@@ -103,7 +81,7 @@ public class DVD extends Media{
 	 * Returnerar en sträng-representation av antalet skådespelare som objektet har.
 	 * @return res (stränglista över antalet skådespelare)
 	 */
-	public String getActors(){
+	public String getActorsAsString(){
 		String res = "";
 		for(int i = 0; i < actors.length; i++){
 			if(i < actors.length-1){
@@ -113,6 +91,14 @@ public class DVD extends Media{
 			}
 		}
 		return res;
+	}
+	
+	/**
+	 * Returnerar en String-array med alla namnen på alla skådespelarna.
+	 * @return actors Alla skådespelare för denna DVD
+	 */
+	public String[] getActors(){
+		return this.actors;
 	}
 	
 	/**

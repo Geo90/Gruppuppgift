@@ -11,20 +11,15 @@ public class Book extends Media{
 	private String author;
 	
 	/**
-	 * Skapar ett bok-objekt med id:t mediaId
-	 * @param mediaId
+	 * Skapar ett Bok-objekt
+	 * @param author Författare
+	 * @param mediaId Media ID
+	 * @param title Titel
+	 * @param year Utgivnings år
+	 * @param borrowed status för om den är lånad
 	 */
-	public Book(String mediaId){
-		super(mediaId);
-	}
-	
-	/**
-	 * Skapar ett bok-objekt med författaren author och id:t mediaId
-	 * @param author
-	 * @param mediaId
-	 */
-	public Book(String author, String mediaId){
-		super(mediaId);
+	public Book(String author, String mediaId, String title, String year){
+		super(mediaId,title,year,false);
 		this.author = author;
 	}
 	

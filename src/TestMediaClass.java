@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-
+import collections.*;
 
 public class TestMediaClass {
 	public static void main(String[] args) {
@@ -32,8 +31,14 @@ public class TestMediaClass {
 		System.out.println(dvd.getTitle());
 		System.out.println(dvd.getYear());
 		System.out.println(dvd.getActors());
-		System.out.println(dvd.getActor("Sauron"));
-		System.out.println(dvd.getActor("Gandalf"));
+		System.out.println(dvd.containsActor("Sauron"));
+		System.out.println(dvd.containsActor("Gandalf"));
+		String[] arr = dvd.getActors();
+		for(String elem:arr)
+			System.out.println(elem);
+		System.out.println(dvd.getActorsAsString());
+		
+		
 	}
 
 }
