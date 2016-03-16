@@ -1,21 +1,17 @@
 package collections;
 
 import java.util.Comparator;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import collections.ArrayList;
-import collections.LinkedList;
 import collections.List;
 /**
- * Represents a BinarySearchTree, the basics behind a tree like this is that if a children node
- * has a less value compared to is parent it will be placed to the left under the parent. Likewise,
- * if the children has a greater value than the parent it will be placed to the right under the parent node.
- * 
+ * Representerar ett binärt sökträd som lagrar noder som är mindre än en annan node till vänster och de som är större till höger.  
  * @author Benjamin Sejdic
- *
- * @param <K> key
- * @param <V> value
+ * 
+ * @param <K> key 
+ * @param <V> value 
  */
 
 public class BinarySearchTree<K, V> implements SearchTree<K, V> {
@@ -24,31 +20,32 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	private int size;
 
 	/**
-	 * Constructs and initializes a new comparator
+	 * Konstruerar och initialiserar en ny comparator
 	 */
 	public BinarySearchTree() {
 		comparator = new Comp();
 	}
 
 	/**
-	 * Constructs and initalizes a optional comparator
-	 * @param comp the comparator
+	 * Konstruerar och initialiserar en valfri comparator
+	 * @param comp den comparator som man vill använda
 	 */
 	public BinarySearchTree(Comparator<K> comp) {
 		comparator = comp;
 	}
 
 	/**
-	 * Returns the tree that holds the nodes
-	 * @return tree 
+	 * Returnerar ett träd 
+	 * @return ett träd 
 	 */
 	public BSTNode<K, V> root() {
 		return tree;
 	}
+	
 	/**
-	 * Returns the value of the key 
-	 * @param key the key 
-	 * @return the value of the key or null if it isnt found
+	 * Returnerar en nyckels värde 
+	 * @param key den nyckel man vill hämta värdet ifrån 
+	 * @return värdet (arraylist) av nyckeln eller null om key inte finns 
 	 */
 	public V get(K key) {
 		BSTNode<K, V> node = find(key);
@@ -58,19 +55,18 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Put a new key with a value into the tree
-	 * @param key name of the key
-	 * @param value the value associated with the key
+	 * Sätter en ny nod i trädet 
+	 * @param key nyckeln
+	 * @param value värdet som ska förknippas med nyckeln
 	 */
 	public void put(K key, V value) {
 		tree = put(tree, key, value);
 	}
 
 	/**
-	 * Removes the specified key
-	 * @param key the key to be removed
-	 * @return null if the key isn't found, if the key is found then the value of the key is 
-	 * returned 
+	 * Tar bort en nyckel i trädet 
+	 * @param key nyckeln som man vill ta bort  
+	 * @return null om nyckeln inte hittas annars returneras värdet som är förknippad med nyckeln
 	 */
 	public V remove(K key) {
 		V value = get(key);
@@ -81,25 +77,25 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Checks whether the tree contains the key or not
-	 * @param key the key
-	 * @return true if the key is in the tree and false if not
+	 * Kollar om nyckeln finns i trädet
+	 * @param key nyckeln man vill söka efter
+	 * @return true om nyckeln finns i trädet annars false
 	 */
 	public boolean contains(K key) {
 		return find(key) != null;
 	}
 
 	/**
-	 * The height of the tree gets returned, that is how many nodes we need to pass in order to 
-	 * get to the last node which is found on the bottom of the tree
+	 * Trädets höjd returneras, det vill säga antalet noder som måste passeras för att komma till den sista noden
+	 * som är längst ner i trädet
 	 */
 	public int height() {
 		return height(tree);
 	}
 
 	/**
-	 * Returns an iterator over the nodes
-	 * @return an iterator over the nodes
+	 * Returnerar en iterator över noderna i trädet
+	 * @return en iterator över noderna i trädet
 	 */
 	public Iterator<V> iterator() {
 		return new Iter();
@@ -167,8 +163,8 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Returns the number of elements in the tree with the size method in the BSTNode class
-	 * @return number of elements in thee tree
+	 * Returnerar antalet element i trädet med size metoden i BSTNode klassen
+	 * @return antalet element i trädet 
 	 */
 	public int size1() {
 		if (tree == null) {
@@ -178,8 +174,8 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Returns the number of elements in the tree
-	 * @return number of elements in the tree
+	 * Returnerar antalet element i trädet med hjälp av rekursion
+	 * @return antalet element i trädet
 	 */
 	public int size2() {
 		return size2(tree);
@@ -193,16 +189,16 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Returns the size of the tree
-	 * @return size of the tree
+	 * Returnerar antalet element i trädet
+	 * @return antalet element i trädet
 	 */
 	public int size() {
 		return size;
 	}
 
 	/**
-	 * All values from the tree gets copied and placed in an arrayList ordered
-	 * @return an arrayList with the values from the tree
+	 * Returnerar en arraylist med alla nycklar från trädet i ordning
+	 * @return en arraylist med nycklarna i trädet 
 	 */
 	public List<K> keys() {
 		ArrayList<K> list = new ArrayList<K>();
@@ -220,8 +216,8 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * All values from the tree gets copied and placed in a LinkedList in postorder
-	 * @return a LinkedList with the values stored in postorder from the tree 
+	 * Returnerar en länkad lista med alla värden från trädet i postorder
+	 * @return en länkad lista med alla nycklars värde från trädet 
 	 */
 	public List<V> values() {
 		ArrayList<V> list = new ArrayList<V>();
@@ -238,8 +234,8 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Returns the element with the least key
-	 * @return the value of the least key
+	 * Returnerar det minsta värdet i trädet
+	 * @return minsta värdet i trädet 
 	 */
 	public V first() {
 		BSTNode<K, V> node = tree;
@@ -253,8 +249,8 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Returns the element with the highest key value
-	 * @return the value of the higest key value
+	 * Returnerar det största värdet i trädet
+	 * @return det största värdet i trädet
 	 */
 	public V last() {
 		BSTNode<K, V> node = tree;
@@ -268,7 +264,7 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Prints out the keys and corresponding values from the tree
+	 * Skriver ut samtliga nycklar och värden från trädet 
 	 */
 	public void print() {
 		print(tree);
@@ -284,7 +280,7 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Prints out the keys and corresponding values from the tree in preorder 
+	 * Skriver ut samtliga nycklar och värden från trädet i preorder
 	 */
 	public void printPreorder() {
 		printPreorder(tree);
@@ -299,7 +295,7 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Prints out the keys and corresponding values from the tree in postorder
+	 * Skriver ut samtliga nycklar och värden från trädet i preorder i postorder
 	 */
 	public void printPostorder() {
 		printPostorder(tree);
@@ -321,8 +317,7 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 	}
 
 	/**
-	 * Class that implements an iterator over an arraylist, the elements in the arraylist are stored in 
-	 * inorder
+	 * En klass som implementerar en iterator över en arraylist, elementen i arraylisten är sorterade i oordning
 	 * @author Benjamin Sejdic
 	 *
 	 */
@@ -330,8 +325,8 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 		ArrayList<V> list = new ArrayList<V>();
 		int index = -1;
 
-		/*
-		 * Stors the values from the tree in an arrayList in inorder
+		/**
+		 * Lagrar värdena i trädet i en arraylist i oordning
 		 */
 		public Iter() {
 			inOrder(tree);
@@ -346,14 +341,14 @@ public class BinarySearchTree<K, V> implements SearchTree<K, V> {
 		}
 
 		/**
-		 * Return true if there is more elements otherwise false
+		 * Returnerar true om det finns fler elements annars false
 		 */
 		public boolean hasNext() {
 			return index < list.size() - 1;
 		}
 
 		/**
-		 * Get the next element in the arraylist
+		 * Hämtar nästa element i arraylisten
 		 */
 		public V next() {
 			if (!hasNext())
