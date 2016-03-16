@@ -1,13 +1,17 @@
+package testGui;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -26,10 +30,16 @@ public class GUI {
 	private JTextField logInField, searchField, borrowField, returnField;
 	private JButton logInBtn, searchBtn, borrowBtn, returnBtn, refreshBtn;
 	private JTextArea searchArea, myMediaArea;
-
+	private ArrayList<TestMem> members;
+	private ArrayList<TestMenjeke> media;
+	private ArrayList<TestMenjeke> myMedia;
+	/**
+	 * Constructor that holds JFrame and the panels.
+	 */
 	GUI() {
 
 		GridBagConstraints gbc = new GridBagConstraints();
+		
 		// Get the JFrames and cast it as JPanel
 		master = (JPanel) frame.getContentPane();
 
@@ -39,12 +49,11 @@ public class GUI {
 		// Initialize JTabbedPane
 		theTabbedPane = new JTabbedPane();
 
-		// Initialize components for Tab1
-
+		// Initialize components for LabelOne
 		logInField = new JTextField("Enter ID", 10);
 		logInBtn = new JButton("Log in");
 
-		// Initialize components for Tab2
+		// Initialize components for LabelTwo
 		searchField = new JTextField("Search Media ID");
 		searchBtn = new JButton("Search");
 		borrowField = new JTextField("Borrow Media ID");
@@ -96,7 +105,7 @@ public class GUI {
 		gbc.gridy = 5;
 		panelTwo.add(borrowBtn, gbc);
 
-		// PanelThree
+		// Initialize PanelThree and components
 		panelThree = new JPanel(new GridBagLayout());
 		panelThree.setBorder(BorderFactory.createTitledBorder("Your Media"));
 
@@ -137,6 +146,9 @@ public class GUI {
 
 	}
 
+	/**
+	 * This method adds listeners to our buttons
+	 */
 	private void addButtonListeners() {
 		ButtonListener listener = new ButtonListener();
 
@@ -147,26 +159,147 @@ public class GUI {
 		refreshBtn.addActionListener(listener);
 	}
 
+	/**
+	 * This class implements ActionListener and handles the action performed when a 
+	 * button is pressed.
+	 * @author Erik Lewis Åkerman, Kablai Tokhi
+	 *
+	 */
+	public void nameandmedia(){
+
+		// Create new testmembers ArrayList.
+		members = new ArrayList<>();
+		TestMem kabbe = new TestMem("Kabbe");
+		TestMem erik = new TestMem("Erik");
+		TestMem benji = new TestMem("Benji");
+		TestMem george = new TestMem("George");
+		TestMem sebbe = new TestMem("Sebbe");
+		TestMem danial = new TestMem("Danial");
+		// Add 6 members.
+		members.add(kabbe);
+		members.add(erik);
+		members.add(benji);
+		members.add(george);
+		members.add(sebbe);
+		members.add(danial);
+
+		// Loop through members.
+		//for (int i = 0; i < members.size(); i++) {
+			//System.out.println("member: " + members.get(i).getId());
+		
+
+		// Create new testmedia ArrayList.
+		media = new ArrayList<>();
+		TestMenjeke herre = new TestMenjeke("Flugornas Herre");
+		TestMenjeke hitch = new TestMenjeke("Liftarens guide till galaxen");
+		TestMenjeke sol = new TestMenjeke("Solens storm");
+		TestMenjeke pfann = new TestMenjeke("Albanernas pannkakor");
+		TestMenjeke lep = new TestMenjeke("Leprechauns at large");
+		TestMenjeke space = new TestMenjeke("Spaceshit");
+		// Add 6 medias.
+		media.add(herre);
+		media.add(hitch);
+		media.add(sol);
+		media.add(pfann);
+		media.add(lep);
+		media.add(space);
+		
+		// New arrayList
+		myMedia = new ArrayList<>();
+		
+		
+
+		// Loop through media
+		//for (int i = 0; i < media.size(); i++) {
+			//System.out.println("media: " + media.get(i).getName());
+		
+		}
 	private class ButtonListener implements ActionListener {
 
+		@SuppressWarnings("unused")
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			nameandmedia();
+			int flag = 0;
 			if (e.getSource() == logInBtn) {
-				theTabbedPane.setEnabledAt(1, true);
-				theTabbedPane.setEnabledAt(2, true);
-
-			}
+				for(int i = 0; i <members.size(); i++){
+					System.out.println(logInField.getText() + members.get(i).getId() );
+					if(logInField.getText().equals(members.get(i).getId()) ) {
+							theTabbedPane.setEnabledAt(1, true);
+							theTabbedPane.setEnabledAt(2, true);
+							flag = 0;
+							break;
+					}else{
+						flag = 1 ;
+					}
+					}
+				}
+			if(flag == 1){
+					JOptionPane.showMessageDialog(null,"Fel ID, pröva igen");
+					theTabbedPane.setEnabledAt(1, false);
+					theTabbedPane.setEnabledAt(2, false);
+				}
+			
 			if (e.getSource() == searchBtn) {
-				searchArea.setText("Testing searchBtn....");
+				String list = "";
+				for (int i = 0; i < media.size(); i++){
+					list += '\n' + media.get(i).getName();
+					searchArea.setText(list);
+					
+				}
+				
 			}
 			if (e.getSource() == borrowBtn) {
-				searchArea.setText("Testing borrowBtn....");
+				int flag2 = 0;
+				String list6 = "";
+				for (int i = 0; i < media.size(); i++){
+					if(borrowField.getText().equals(media.get(i).getName() )){
+						myMedia.add(media.get(i));
+						media.remove(i);
+						String list = "";
+						for (int k = 0; k< media.size(); k++){
+							list += '\n' + media.get(k).getName();
+							searchArea.setText(list);
+							flag2 = 0;
+						}
+						for (int k = 0; k< myMedia.size(); k++){
+							list6 += '\n' + myMedia.get(k).getName();
+							myMediaArea.setText(list6);
+						}
+					}else{
+						flag2 = 1;
+					}
+				}if(flag2 == 1){
+					JOptionPane.showMessageDialog(null, "Median finns inte");
+				}
+				
 			}
 			if (e.getSource() == returnBtn) {
-				myMediaArea.setText("Testing returnBtn....");
+				int flag3 = 0;
+				for (int i = 0; i < myMedia.size(); i++){
+					if(returnField.getText().equals(myMedia.get(i).getName() )){
+						media.add(media.get(i));
+						myMedia.remove(i);
+						String list10 = "";
+						for (int k = 0; k< myMedia.size(); k++){
+							list10 += '\n' + myMedia.get(k).getName();
+							myMediaArea.setText(list10);
+							flag3 = 0;
+						}
+					}else{
+						flag3= 1;
+					}
+				}if(flag3 == 1){
+					JOptionPane.showMessageDialog(null, "Median finns inte lånad");
+				}
 			}
 			if (e.getSource() == refreshBtn) {
-				myMediaArea.setText("Testing refreshBtn....");
+				String list3 = "";
+				for (int i = 0; i < myMedia.size(); i++){
+					list3 += '\n' + myMedia.get(i).getName();
+					myMediaArea.setText(list3);
+					
+				}
 			}
 
 		}
@@ -174,7 +307,10 @@ public class GUI {
 	}
 
 	public static void main(String[] args) {
+		
 		new GUI();
+
+		
 
 	}
 
