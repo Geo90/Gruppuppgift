@@ -38,11 +38,12 @@ public class Controller {
 				throw new InvalidUserException("memberID: " + memberID + " has no user account in this system.");
 			} else {
 				this.user = memberTree.get(memberID);
+				return true;
 			}
 		} catch (InvalidUserException exception) {
 			JOptionPane.showMessageDialog(null, "Fel användarnamn");
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -51,18 +52,15 @@ public class Controller {
 	 * @return true om lånet utfördes annars false
 	 */
 	public boolean loan(String mediaID) {
-		boolean containsMedia = mediaTable.containsKey(mediaID);
-		boolean borrowed = true;
-		if (containsMedia) {
+		if (isInLibrary(mediaID)) {
 			Media media = mediaTable.get(mediaID);
-			borrowed = media.borrowed();
-			if (!borrowed) {
+			if (!isBorrowed(mediaID)){
 				user.addLoan(media);
-				// media.setBorrowedStatus(true);
+				media.setBorrowedStatus(true);
 				return true;
 			}
 		} else {
-			if (!containsMedia) {
+			if (!isInLibrary(mediaID)) {
 				JOptionPane.showMessageDialog(null, "Det här media objektet finns inte i biblioteket.");
 			} else {
 				JOptionPane.showMessageDialog(null, "Den är tyvärr utlånad.");
@@ -78,31 +76,54 @@ public class Controller {
 	public boolean returnLoan(String mediaID){
 		int indexOfMedia;
 		Media media = mediaTable.get(mediaID);
-		
 		ArrayList<Media> loanList = user.getLoanList();
-		///////////////////KOMPLETTERAS MED IF SATSER & CATCH EXCEPTIONS
-		indexOfMedia = loanList.indexOf(media);
-		loanList.get(indexOfMedia);//.setBorrowedStatusFalse;
-		loanList.remove(indexOfMedia);
-		return true;
 		
+		if(isBorrowed(mediaID)){
+			return false;
+		}
+		else{
+			indexOfMedia = loanList.indexOf(media);
+			loanList.get(indexOfMedia).setBorrowedStatus(false);
+			loanList.remove(indexOfMedia);
+			return true;
+		}
 	}
 	/**
-	 * 
-	 * @param mediaID
-	 * @return
+	 * Söker efter om ett Media objekt finns i biblioteket och returnerar en
+	 * String med titeln.
+	 * @param mediaID Media ID
+	 * @return String namnet på det sökta objektet om den finns annars null.
 	 */
-	public boolean search(String mediaID){
-		return false;
+	public String search(String mediaID){
+		if(isInLibrary(mediaID)){
+			return mediaTable.get(mediaID).getTitle();
+		}
+		return null;
 	}
+	/**
+	 * Sätter controllerns användare till null.
+	 * @return boolean Om controllerns user-instansvariabel sattes till null
+	 */
 	public boolean logOut(){
-		return false;
+		this.user=null;
+		return true;
 	}
-	public boolean isInLibrary(){
-		return false;
-		
+	/**
+	 * Kollar om ett Media objekt finns i biblioteket.
+	 * Returnerar true om den finns i biblioteket.
+	 * @param key Media ID
+	 * @return boolean Om Media objektet finns i biblioteket.
+	 */
+	public boolean isInLibrary(String key){
+		return mediaTable.containsKey(key);
 	}
-	public boolean isBorrowed(){
-		return false;
+	/**
+	 * Kollar om ett Media objekt är utlånat.
+	 * Returnerar true om den är utlånad.
+	 * @param key Media ID
+	 * @return boolean Media objektets lånestatus
+	 */
+	public boolean isBorrowed(String key){
+		return mediaTable.get(key).getBorrowedStatus();
 	}
 }
