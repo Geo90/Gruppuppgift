@@ -47,26 +47,33 @@ public class TestBSTree {
 	}
 	public static void main(String[] args){
 		TestBSTree t = new TestBSTree();
-		Iterator<Member> iter = t.memberList.iterator();
-		while(iter.hasNext()){
-			Member temp = iter.next();
-			System.out.println(temp.toString());
-		}
+//		Iterator<Member> iter = t.memberList.iterator();
+//		while(iter.hasNext()){
+//			Member temp = iter.next();
+//			System.out.println(temp.toString());
+//		}
 		Member memberTest = new Member("123","Benji","040532668235");
-		System.out.println(memberTest.toString());
-		memberTest.setMemberID("100101010011001");
-		memberTest.setName("Benjamin");
-		memberTest.setPhoneNumber("040");
-		System.out.println(memberTest.toString());
+		System.out.println(memberTest.getLoanList());
 		Book kalleAnka = new Book("Kalle Anka","Kalle","a","b");
+		Book LotR = new Book("LotR","LotR","a","b");
 		memberTest.addLoan(kalleAnka);
-		ArrayList<Media> list = memberTest.getLoanList();
-		System.out.println("före return loan "+list);
-		System.out.println("size"+list.size());
-		memberTest.returnLoan(kalleAnka);
-		System.out.println("size"+list.size());
-		System.out.println("efter "+list);
-		t.test();
+		memberTest.addLoan(LotR);
+		System.out.println(memberTest.getLoanList().size());
+//		System.out.println(memberTest.toString());
+//		memberTest.setMemberID("100101010011001");
+//		memberTest.setName("Benjamin");
+//		memberTest.setPhoneNumber("040");
+//		System.out.println(memberTest.toString());
+//		
+//		Book kalleAnka = new Book("Kalle Anka","Kalle","a","b");
+//		memberTest.addLoan(kalleAnka);
+//		ArrayList<Media> list = memberTest.getLoanList();
+//		System.out.println("före return loan "+list);
+//		System.out.println("size"+list.size());
+//		memberTest.returnLoan(kalleAnka);
+//		System.out.println("size"+list.size());
+//		System.out.println("efter "+list);
+//		t.test();
 
 	}
 

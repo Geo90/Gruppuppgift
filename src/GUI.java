@@ -30,6 +30,8 @@ public class GUI {
 	private ArrayList<TestMem> members;
 	private ArrayList<TestMenjeke> media;
 	private ArrayList<TestMenjeke> myMedia;
+	private Controller controller;
+	private boolean loggedIn = false;
 
 	/**
 	 * Constructor that holds JFrame and the panels.
@@ -218,114 +220,137 @@ public class GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int flag2 = 0;
-			int flag = 0;
 			if (e.getSource() == logInBtn) {
-				for (int i = 0; i < members.size(); i++) {
+				if (loggedIn) {
+					theTabbedPane.setEnabledAt(1, false);
+					theTabbedPane.setEnabledAt(2, false);
+					logInBtn.setText("Log in");
+					logInField.setText("");
+					loggedIn=false;
+				} else if (controller.validUser(logInField.getText()) && !loggedIn) {
+					theTabbedPane.setEnabledAt(1, true);
+					theTabbedPane.setEnabledAt(2, true);
+					logInBtn.setText("Log out");
+					loggedIn=true;
+				} else {
+					JOptionPane.showMessageDialog(null, "Fel ID, prova igen");
+					theTabbedPane.setEnabledAt(1, false);
+					theTabbedPane.setEnabledAt(2, false);
+				}
 
-					if (logInField.getText().equals(members.get(i).getId())) {
-						theTabbedPane.setEnabledAt(1, true);
-						theTabbedPane.setEnabledAt(2, true);
-						flag = 0;
-						break;
-					} else {
-						flag = 1;
+				if (e.getSource() == searchBtn) {//KAN FIXAS NÄR RÄTT METOD LAGTS IN I Hashtable-klassen
+					String list = "";
+					for (int i = 0; i < media.size(); i++) {
+						list += '\n' + media.get(i).getName();
+						searchArea.setText(list);
+
+					}
+
+				}
+
+				
+				
+				if (e.getSource() == borrowBtn) {
+					String input = borrowField.getText();
+					if( controller.isInLibrary(input)  &&  controller.isBorrowed(input) ){
+						if(controller.loan(input)){
+							JOptionPane.showMessageDialog(null, "Objektet har lagts till i din lånelista.");
+						}
+					}
+					
+					
+//					String list6 = "";
+//					for (int i = 0; i < media.size(); i++) {
+//						String getMedia = media.get(i).getName();
+//						boolean isInLibrary = borrowField.getText().equals(getMedia);
+//
+//						if (isInLibrary) {
+//							myMedia.add(media.get(i));
+//							media.remove(i);
+//							flag2 = 0;
+//							String list = "";
+//							for (int k = 0; k < media.size(); k++) {
+//								list += '\n' + media.get(k).getName();
+//								searchArea.setText(list);
+//							}
+//							for (int k = 0; k < myMedia.size(); k++) {
+//								list6 += '\n' + myMedia.get(k).getName();
+//								myMediaArea.setText(list6);
+//							}
+//							break;
+//						} else if (isInLibrary == false && media.get(i).getName() != null) {
+//							flag2 = 1;
+//						} else {
+//							flag2 = 2;
+//						}
+//					}
+//				}
+//				if (flag2 == 2) {
+//					JOptionPane.showMessageDialog(null, "Median finns inte");
+//				}
+//				
+				
+				if (e.getSource() == returnBtn) {
+
+					int flag3 = 0;
+
+					for (int i = 0; i < myMedia.size(); i++) {
+
+						boolean userHasLoaned = returnField.getText().equals(myMedia.get(i).getName());
+						if (userHasLoaned) {
+
+							media.add(myMedia.get(i));
+
+							myMedia.remove(i);
+
+							String list10 = "";
+							for (int k = 0; k < myMedia.size(); k++) {
+								list10 += '\n' + myMedia.get(k).getName();
+								flag3 = 0;
+							}
+
+							myMediaArea.setText(list10);
+						} else {
+							flag3 = 1;
+						}
+					}
+					if (flag3 == 1) {
+						JOptionPane.showMessageDialog(null, "Median finns inte l�nad");
 					}
 				}
-			}
+				if (e.getSource() == refreshBtn) {
+					JOptionPane.showMessageDialog(null, "message");
+					String list3 = "";
+					for (int i = 0; i < myMedia.size(); i++) {
+						list3 += '\n' + myMedia.get(i).getName();
+						myMediaArea.setText(list3);
 
-			if (flag == 1) {
-				JOptionPane.showMessageDialog(null, "Fel ID, pr�va igen");
-				theTabbedPane.setEnabledAt(1, false);
-				theTabbedPane.setEnabledAt(2, false);
-			}
-
-			if (e.getSource() == searchBtn) {
-				String list = "";
-				for (int i = 0; i < media.size(); i++) {
-					list += '\n' + media.get(i).getName();
-					searchArea.setText(list);
-
-				}
-
-			}
-
-			if (e.getSource() == borrowBtn) {
-
-				String list6 = "";
-				for (int i = 0; i < media.size(); i++) {
-					String getMedia = media.get(i).getName();
-					boolean isInLibrary = borrowField.getText().equals(getMedia);
-
-					if (isInLibrary) {
-						myMedia.add(media.get(i));
-						media.remove(i);
-						flag2 = 0;
-						String list = "";
-						for (int k = 0; k < media.size(); k++) {
-							list += '\n' + media.get(k).getName();
-							searchArea.setText(list);
-						}
-						for (int k = 0; k < myMedia.size(); k++) {
-							list6 += '\n' + myMedia.get(k).getName();
-							myMediaArea.setText(list6);
-						}
-						break;
-					} else if (isInLibrary == false && media.get(i).getName() != null) {
-						flag2 = 1;
-					} else {
-						flag2 = 2;
 					}
 				}
-			}
-			if (flag2 == 2) {
-				JOptionPane.showMessageDialog(null, "Median finns inte");
-			}
-			if (e.getSource() == returnBtn) {
 
-				int flag3 = 0;
-
-				for (int i = 0; i < myMedia.size(); i++) {
-
-					boolean userHasLoaned = returnField.getText().equals(myMedia.get(i).getName());
-					if (userHasLoaned) {
-
-						media.add(myMedia.get(i));
-
-						myMedia.remove(i);
-
-						String list10 = "";
-						for (int k = 0; k < myMedia.size(); k++) {
-							list10 += '\n' + myMedia.get(k).getName();
-							flag3 = 0;
-						}
-
-						myMediaArea.setText(list10);
-					} else {
-						flag3 = 1;
-					}
-				}
-				if (flag3 == 1) {
-					JOptionPane.showMessageDialog(null, "Median finns inte l�nad");
-				}
-			}
-			if (e.getSource() == refreshBtn) {
-				JOptionPane.showMessageDialog(null, "message");
-				String list3 = "";
-				for (int i = 0; i < myMedia.size(); i++) {
-					list3 += '\n' + myMedia.get(i).getName();
-					myMediaArea.setText(list3);
-
-				}
 			}
 
 		}
 
+		/**
+		 * Sätter Controller instansvariabeln för GUI:n så att anrop kan ske
+		 * från GUI:n till Controllern.
+		 * 
+		 * @param controller
+		 *            Controller objekt som GUI:n ska skicka medellanden till
+		 */
+	
+
+//		public static void main(String[] args) {
+//
+//			new GUI();
+//
+//		}
+
 	}
-
-	public static void main(String[] args) {
-
-		new GUI();
-
+	
 	}
-
+	public void setController(Controller controller) {
+		this.controller = controller;
+	}
 }

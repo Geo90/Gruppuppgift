@@ -8,22 +8,23 @@ import collections.*;
  *
  */
 public class Controller {
-	private BinarySearchTree<String, Member> memberTree;
-	private HashtableOH<String, Media> mediaTable;
+	private MemberTree memberTree;
+	private Hashtable library;
 	private GUI gui;
 	private Member user;
 
 	/**
 	 * En konstruktor som initierar låntagarna, biblioteket och användargränssnittet
 	 * @param memberTree trädet med låntagarna
-	 * @param mediaTable en hashtabell med de olika mediaobjekten
+	 * @param library en hashtabell med de olika mediaobjekten
 	 * @param gui användargränsnittet
 	 */
-	public Controller(BinarySearchTree<String, Member> memberTree, HashtableOH<String, Media> mediaTable,
+	public Controller(MemberTree memberTree, Hashtable library,
 			GUI gui) {
 		this.gui = gui;
-		this.mediaTable = mediaTable;
+		this.library = library;
 		this.memberTree = memberTree;
+		gui.setController(this);
 	}
 
 	/**
@@ -32,12 +33,11 @@ public class Controller {
 	 * @return true om giltig låntagare annars false
 	 */
 	public boolean validUser(String memberID) {
-		boolean containsMember = memberTree.contains(memberID);
 		try {
-			if (!containsMember) {
+			if (!memberTree.checkUser(memberID)) {
 				throw new InvalidUserException("memberID: " + memberID + " has no user account in this system.");
 			} else {
-				this.user = memberTree.get(memberID);
+				this.user = memberTree.getUser(memberID);
 				return true;
 			}
 		} catch (InvalidUserException exception) {
@@ -53,7 +53,7 @@ public class Controller {
 	 */
 	public boolean loan(String mediaID) {
 		if (isInLibrary(mediaID)) {
-			Media media = mediaTable.get(mediaID);
+			Media media = library.getMedia(mediaID);
 			if (!isBorrowed(mediaID)){
 				user.addLoan(media);
 				media.setBorrowedStatus(true);
@@ -75,7 +75,7 @@ public class Controller {
 	 */
 	public boolean returnLoan(String mediaID){
 		int indexOfMedia;
-		Media media = mediaTable.get(mediaID);
+		Media media = library.getMedia(mediaID);
 		ArrayList<Media> loanList = user.getLoanList();
 		
 		if(isBorrowed(mediaID)){
@@ -96,10 +96,13 @@ public class Controller {
 	 */
 	public String search(String mediaID){
 		if(isInLibrary(mediaID)){
-			return mediaTable.get(mediaID).getTitle();
+			return library.getMedia(mediaID).getTitle();
 		}
 		return null;
 	}
+//	public String[] getLibrary(){
+//		ArrayList<Media> lib = library.getListOfMedia(hashIndex)///BEHÖVER FIX - getListOfMedia ska vara void
+//	}
 	/**
 	 * Sätter controllerns användare till null.
 	 * @return boolean Om controllerns user-instansvariabel sattes till null
@@ -115,7 +118,7 @@ public class Controller {
 	 * @return boolean Om Media objektet finns i biblioteket.
 	 */
 	public boolean isInLibrary(String key){
-		return mediaTable.containsKey(key);
+		return library.containsMedia(key);
 	}
 	/**
 	 * Kollar om ett Media objekt är utlånat.
@@ -124,6 +127,6 @@ public class Controller {
 	 * @return boolean Media objektets lånestatus
 	 */
 	public boolean isBorrowed(String key){
-		return mediaTable.get(key).getBorrowedStatus();
+		return library.getBorrowedStatus(key); 
 	}
 }
