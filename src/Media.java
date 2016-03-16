@@ -11,7 +11,13 @@ public abstract class Media {
 	private String title;
 	private String year;
 	private boolean borrowed;
-
+	
+	/**
+	 * Tom konstruktor för att instansiera ett Media objekt som sedan ska få en 
+	 * referens till ett komplett Media objekt.
+	 */
+	public Media(){	
+	}
 	/**
 	 * Konstruktorn skapar ett Media-objekt med ett id mediaId.
 	 * @param mediaId
