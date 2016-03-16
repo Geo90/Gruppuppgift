@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -143,6 +144,8 @@ public class GUI {
 		this.theTabbedPane.setEnabledAt(2, false);
 
 		addButtonListeners();
+		
+		nameandmedia();
 
 	}
 
@@ -205,7 +208,7 @@ public class GUI {
 		media.add(space);
 		
 		// New arrayList
-		myMedia = new ArrayList<>();
+		this.myMedia = new ArrayList<>();
 		
 		
 
@@ -219,7 +222,7 @@ public class GUI {
 		@SuppressWarnings("unused")
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			nameandmedia();
+			int flag2 = 0;
 			int flag = 0;
 			if (e.getSource() == logInBtn) {
 				for(int i = 0; i <members.size(); i++){
@@ -234,6 +237,7 @@ public class GUI {
 					}
 					}
 				}
+			
 			if(flag == 1){
 					JOptionPane.showMessageDialog(null,"Fel ID, pr�va igen");
 					theTabbedPane.setEnabledAt(1, false);
@@ -249,43 +253,61 @@ public class GUI {
 				}
 				
 			}
+			
 			if (e.getSource() == borrowBtn) {
-				int flag2 = 0;
+				
 				String list6 = "";
+				JOptionPane.showMessageDialog(null, "media Size: "+media.size());
+				
 				for (int i = 0; i < media.size(); i++){
-					if(borrowField.getText().equals(media.get(i).getName() )){
+					String getMedia = media.get(i).getName();
+					boolean isInLibrary = borrowField.getText().equals(getMedia );
+//			
+					if(isInLibrary){	
 						myMedia.add(media.get(i));
 						media.remove(i);
+						flag2 = 0;
 						String list = "";
 						for (int k = 0; k< media.size(); k++){
 							list += '\n' + media.get(k).getName();
 							searchArea.setText(list);
-							flag2 = 0;
 						}
 						for (int k = 0; k< myMedia.size(); k++){
 							list6 += '\n' + myMedia.get(k).getName();
 							myMediaArea.setText(list6);
 						}
-					}else{
+						break;
+					}else if(isInLibrary == false && media.get(i).getName() != null){
 						flag2 = 1;
+					} else{
+						flag2= 2;
 					}
-				}if(flag2 == 1){
-					JOptionPane.showMessageDialog(null, "Median finns inte");
-				}
-				
+					}
+			}
+			if(flag2 == 2){
+				JOptionPane.showMessageDialog(null, "Median finns inte");
 			}
 			if (e.getSource() == returnBtn) {
+				
 				int flag3 = 0;
+				
 				for (int i = 0; i < myMedia.size(); i++){
-					if(returnField.getText().equals(myMedia.get(i).getName() )){
-						media.add(media.get(i));
+					
+					boolean userHasLoaned = returnField.getText().equals(myMedia.get(i).getName() );
+					if(userHasLoaned){
+						
+						media.add(myMedia.get(i));
+						
+						
 						myMedia.remove(i);
+					
 						String list10 = "";
 						for (int k = 0; k< myMedia.size(); k++){
 							list10 += '\n' + myMedia.get(k).getName();
-							myMediaArea.setText(list10);
 							flag3 = 0;
 						}
+
+						myMediaArea.setText(list10);
 					}else{
 						flag3= 1;
 					}
@@ -294,6 +316,7 @@ public class GUI {
 				}
 			}
 			if (e.getSource() == refreshBtn) {
+				JOptionPane.showMessageDialog(null, "message");
 				String list3 = "";
 				for (int i = 0; i < myMedia.size(); i++){
 					list3 += '\n' + myMedia.get(i).getName();
