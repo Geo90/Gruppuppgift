@@ -95,16 +95,17 @@ public class GUI {
 		searchBtn = new JButton("Search");
 		borrowField = new JTextField("Borrow Media ID");
 		borrowBtn = new JButton("Borrow");
-		searchArea = new JTextArea(".......", 30, 75);
+		searchArea = new JTextArea(".......", 20, 45);
+		JScrollPane scrollp = new JScrollPane(searchArea);
 
-		searchArea.setPreferredSize(new Dimension(30, 75));
 
 		// Initialize components for Tab3
 		returnField = new JTextField("Return Media ID");
 		returnBtn = new JButton("Return Media");
 
 		refreshBtn = new JButton("Refresh");
-		myMediaArea = new JTextArea(".......", 30, 75);
+		myMediaArea = new JTextArea(".......", 20, 45);
+		JScrollPane scrollp2 = new JScrollPane(myMediaArea);
 
 		// Initialize panelOne and add components
 		panelOne = new JPanel(new GridBagLayout());
@@ -134,7 +135,7 @@ public class GUI {
 
 		gbc.gridx = 0;
 		gbc.gridy = 3;
-		panelTwo.add(searchArea, gbc);
+		panelTwo.add(scrollp, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 4;
@@ -158,7 +159,7 @@ public class GUI {
 
 		gbc.gridx = 0;
 		gbc.gridy = 3;
-		panelThree.add(myMediaArea, gbc);
+		panelThree.add(scrollp2, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 4;
