@@ -179,15 +179,18 @@ public class Controller {
 			}
 				if (e.getSource() == buttons[1]) { // KAN FIXAS NÄR RÄTT METOD LAGTS IN I Hashtable-klassen
 //					loanList = user.getLoanList(); // ska vara media inte lånelistan för users
-					JOptionPane.showMessageDialog(null, "123");
+					String list ="";
 					media = library.getListOfMedia();
-					JOptionPane.showMessageDialog(null, media);
-					txtArea[0].setText(media.toString()); // ska vara media inte lånelista för user
+					for (int i = 0; i < library.getListOfMedia().size(); i++) {
+						if(library.getListOfMedia().get(i) != null)
+							list += (library.getListOfMedia().get(i).toString()+"\n");
+					}
+					txtArea[0].setText(list); // ska vara media inte lånelista för user
 				}
-			
+			//Borrow
 			if (e.getSource() == buttons[2]) {
-				String input = txtField[1].getText();
-				if (isInLibrary(input) && isBorrowed(input)) {
+				String input = txtField[2].getText();
+				if (isInLibrary(input) && !isBorrowed(input)) {
 					if (loan(input)) {
 						JOptionPane.showMessageDialog(null, "Objektet har lagts till i din lånelista.");
 					}

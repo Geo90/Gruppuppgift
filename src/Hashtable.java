@@ -104,7 +104,7 @@ public class Hashtable {
 		return res;
 	}
 
-	private Media getMedia(String key) {
+	public Media getMedia(String key) {
 		ArrayList<Media> mediaList = new ArrayList<Media>();
 		mediaList = arrayMediaList.get(hash.get(key));
 		if (mediaList == null) {
