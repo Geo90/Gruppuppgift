@@ -1,23 +1,11 @@
-
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 /**
  * This class is responsible for the Graphical User interface.
  * 
- * @author Erik Lewis �kerman, Kablai Tokhi 15/3 - 2016
+ * @author Erik Lewis Åkerman, Kablai Tokhi 15/3 - 2016
  *
  */
 public class GUI {
@@ -31,12 +19,19 @@ public class GUI {
 	private ArrayList<TestMenjeke> media;
 	private ArrayList<TestMenjeke> myMedia;
 	private Controller controller;
-	private boolean loggedIn = false;
-	
-	
+
+	/**
+	 * Returnerar alla flikar (tabbed panes) i GUI
+	 * @return tabbed panes
+	 */
 	public JTabbedPane getTabs(){
 		return theTabbedPane;
 	}
+	
+	/**
+	 * Returnerar alla textfields i GUI
+	 * @return textfields 
+	 */
 	public JTextField[] getTextFields(){
 		JTextField[] arr = new JTextField[4];
 		arr[0]=logInField;
@@ -46,6 +41,11 @@ public class GUI {
 		return arr;
 		
 	}
+	
+	/**
+	 * Returnerar alla knappar i användargränsnittet 
+	 * @return knapparna i användargränsnittet
+	 */
 	public JButton[] getButtons(){
 		JButton[] arr = new JButton[5];
 		arr[0]= logInBtn;
@@ -55,6 +55,11 @@ public class GUI {
 		arr[4]= refreshBtn;
 		return arr;
 	}
+	
+	/**
+	 * Returnerar textarea användargränsnittet
+	 * @return
+	 */
 	public JTextArea[] getJTextArea(){
 		JTextArea[] arr = new JTextArea[2];
 		arr[0]=searchArea;
@@ -170,214 +175,8 @@ public class GUI {
 		this.theTabbedPane.setEnabledAt(1, false);
 		this.theTabbedPane.setEnabledAt(2, false);
 
-		addButtonListeners();
-
-		nameandmedia();
-
 	}
 
-	/**
-	 * This method adds listeners to our buttons
-	 */
-	private void addButtonListeners() {
-		ButtonListener listener = new ButtonListener();
-
-		logInBtn.addActionListener(listener);
-		searchBtn.addActionListener(listener);
-		borrowBtn.addActionListener(listener);
-		returnBtn.addActionListener(listener);
-		refreshBtn.addActionListener(listener);
-	}
-
-	/**
-	 * This class implements ActionListener and handles the action performed
-	 * when a button is pressed.
-	 * 
-	 * @author Erik Lewis �kerman, Kablai Tokhi
-	 *
-	 */
-	public void nameandmedia() {
-
-		// Create new testmembers ArrayList.
-		members = new ArrayList<>();
-		TestMem kabbe = new TestMem("Kabbe");
-		TestMem erik = new TestMem("Erik");
-		TestMem benji = new TestMem("Benji");
-		TestMem george = new TestMem("George");
-		TestMem sebbe = new TestMem("Sebbe");
-		TestMem danial = new TestMem("Danial");
-		// Add 6 members.
-		members.add(kabbe);
-		members.add(erik);
-		members.add(benji);
-		members.add(george);
-		members.add(sebbe);
-		members.add(danial);
-
-		// Loop through members.
-		// for (int i = 0; i < members.size(); i++) {
-		// System.out.println("member: " + members.get(i).getId());
-
-		// Create new testmedia ArrayList.
-		media = new ArrayList<>();
-		TestMenjeke herre = new TestMenjeke("Flugornas Herre");
-		TestMenjeke hitch = new TestMenjeke("Liftarens guide till galaxen");
-		TestMenjeke sol = new TestMenjeke("Solens storm");
-		TestMenjeke pfann = new TestMenjeke("Albanernas pannkakor");
-		TestMenjeke lep = new TestMenjeke("Leprechauns at large");
-		TestMenjeke space = new TestMenjeke("Spaceshit");
-		// Add 6 medias.
-		media.add(herre);
-		media.add(hitch);
-		media.add(sol);
-		media.add(pfann);
-		media.add(lep);
-		media.add(space);
-
-		// New arrayList
-		this.myMedia = new ArrayList<>();
-
-		// Loop through media
-		// for (int i = 0; i < media.size(); i++) {
-		// System.out.println("media: " + media.get(i).getName());
-
-	}
-
-	private class ButtonListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			int flag2 = 0;
-			if (e.getSource() == logInBtn) {
-				if (loggedIn) {
-					theTabbedPane.setEnabledAt(1, false);
-					theTabbedPane.setEnabledAt(2, false);
-					logInBtn.setText("Log in");
-					logInField.setText("");
-					loggedIn=false;
-				} else if (controller.validUser(logInField.getText()) && !loggedIn) {
-					theTabbedPane.setEnabledAt(1, true);
-					theTabbedPane.setEnabledAt(2, true);
-					logInBtn.setText("Log out");
-					loggedIn=true;
-				} else {
-					JOptionPane.showMessageDialog(null, "Fel ID, prova igen");
-					theTabbedPane.setEnabledAt(1, false);
-					theTabbedPane.setEnabledAt(2, false);
-				}
-
-				if (e.getSource() == searchBtn) {//KAN FIXAS NÄR RÄTT METOD LAGTS IN I Hashtable-klassen
-					String list = "";
-					for (int i = 0; i < media.size(); i++) {
-						list += '\n' + media.get(i).getName();
-						searchArea.setText(list);
-
-					}
-
-				}
-
-				
-				
-				if (e.getSource() == borrowBtn) {
-					String input = borrowField.getText();
-					if( controller.isInLibrary(input)  &&  controller.isBorrowed(input) ){
-						if(controller.loan(input)){
-							JOptionPane.showMessageDialog(null, "Objektet har lagts till i din lånelista.");
-						}
-					}
-					
-					
-//					String list6 = "";
-//					for (int i = 0; i < media.size(); i++) {
-//						String getMedia = media.get(i).getName();
-//						boolean isInLibrary = borrowField.getText().equals(getMedia);
-//
-//						if (isInLibrary) {
-//							myMedia.add(media.get(i));
-//							media.remove(i);
-//							flag2 = 0;
-//							String list = "";
-//							for (int k = 0; k < media.size(); k++) {
-//								list += '\n' + media.get(k).getName();
-//								searchArea.setText(list);
-//							}
-//							for (int k = 0; k < myMedia.size(); k++) {
-//								list6 += '\n' + myMedia.get(k).getName();
-//								myMediaArea.setText(list6);
-//							}
-//							break;
-//						} else if (isInLibrary == false && media.get(i).getName() != null) {
-//							flag2 = 1;
-//						} else {
-//							flag2 = 2;
-//						}
-//					}
-//				}
-//				if (flag2 == 2) {
-//					JOptionPane.showMessageDialog(null, "Median finns inte");
-//				}
-//				
-				
-				if (e.getSource() == returnBtn) {
-
-					int flag3 = 0;
-
-					for (int i = 0; i < myMedia.size(); i++) {
-
-						boolean userHasLoaned = returnField.getText().equals(myMedia.get(i).getName());
-						if (userHasLoaned) {
-
-							media.add(myMedia.get(i));
-
-							myMedia.remove(i);
-
-							String list10 = "";
-							for (int k = 0; k < myMedia.size(); k++) {
-								list10 += '\n' + myMedia.get(k).getName();
-								flag3 = 0;
-							}
-
-							myMediaArea.setText(list10);
-						} else {
-							flag3 = 1;
-						}
-					}
-					if (flag3 == 1) {
-						JOptionPane.showMessageDialog(null, "Median finns inte l�nad");
-					}
-				}
-				if (e.getSource() == refreshBtn) {
-					JOptionPane.showMessageDialog(null, "message");
-					String list3 = "";
-					for (int i = 0; i < myMedia.size(); i++) {
-						list3 += '\n' + myMedia.get(i).getName();
-						myMediaArea.setText(list3);
-
-					}
-				}
-
-			}
-
-		}
-
-		/**
-		 * Sätter Controller instansvariabeln för GUI:n så att anrop kan ske
-		 * från GUI:n till Controllern.
-		 * 
-		 * @param controller
-		 *            Controller objekt som GUI:n ska skicka medellanden till
-		 */
-	
-
-//		public static void main(String[] args) {
-//
-//			new GUI();
-//
-//		}
-
-	}
-	
-	}
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
