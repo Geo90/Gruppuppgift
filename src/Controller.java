@@ -156,7 +156,6 @@ public class Controller {
 		public void actionPerformed(ActionEvent e) {
 			ArrayList<Media> loanList;
 			ArrayList<Media> media;
-			loggedIn = false;
 			JTextField[] txtField = gui.getTextFields();
 			JTextArea[] txtArea = gui.getJTextArea();
 			JButton[] buttons = gui.getButtons();
@@ -164,13 +163,13 @@ public class Controller {
 			
 			if (e.getSource() == buttons[0]) {
 				if (loggedIn) {
-					System.out.println("kommer in i if satsen");
 					tabs.setEnabledAt(1, false);
 					tabs.setEnabledAt(2, false);
 					buttons[0].setText("Log in");
-					logOut();
+					//logOut();
 					txtField[0].setText("");
 					loggedIn = false;
+					
 				} else if (validUser(txtField[0].getText()) && !loggedIn) {
 					System.out.println("kommer in i else if satsen");
 					tabs.setEnabledAt(1, true);
@@ -247,6 +246,35 @@ public class Controller {
 			
 			if (e.getSource() == buttons[3]) {
 				JOptionPane.showMessageDialog(null, "me3333sage");
+				String input = txtField[3].getText();
+				boolean found = false;
+				ArrayList<Media> arrList = user.getLoanList();
+				for(int i = 0; i <arrList.size();i++){
+					if(arrList.get(i)!=null){
+						if(arrList.get(i).getId().equals(input)){
+							found = true;
+							//TA BORT OBJEKT
+							arrList.remove(i);
+							//SÄTT BORROWED STATUS TILL FALSE
+							library.setBorrowedStatus(input, false);
+							
+							
+							Iterator<Media> loanIter = user.getLoanList().iterator();
+							Media medi;
+							String res2="";
+							while(loanIter.hasNext()){
+								medi = loanIter.next();
+								System.out.println("to be stored in loan string array : "+medi.toString());
+								res2 += medi.toString()+"\n";
+							}
+							txtArea[1].setText(res2);
+						}
+					}
+					
+				}
+				if(!found){
+					JOptionPane.showMessageDialog(null, "Du har inte lånat detta objekt.");
+				}
 //				loanList = user.getLoanList();
 //				for (int i = 0; i < loanList.size(); i++) {
 //					boolean userHasLoaned = txtField[3].getText().equals(loanList.get(i).getClass().getName());
