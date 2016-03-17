@@ -6,34 +6,30 @@ import java.io.InputStreamReader;
 import collections.*;
 
 /**
- * Reads in a .txt file in order to build up a hashtable over the contents in
- * the file Communicates the contents in the hashtable to the media-class and
- * gets back an media-object
+ *
+ * Läser in en .txt fil för att kunna bygga upp en hashtabell över innehållet
+ * i .txt filen och kommunicerar innehållet i hashtabellen till media-klassen
+ * och får tillbaka ett media-objekt.
  * 
- * @author George
+ * Sänder media-objekt till Controller.java. 
+ * 
  *
  */
 public class Hashtable {
-	// Stores the information of many objects of type ArrayList<String>
-	private HashtableOH<String, Integer> hash;
-	// Stores the information about one object
-	private ArrayList<String> m;
-	// The size of the hashtable
-	private int size = 0;
-	// The file
-	private String filename;
-	// List that contains media-objects
-	private ArrayList<ArrayList<Media>> arrayMediaList;
-	private ArrayList<Media> mediaList;
 
-	// Media-object in order to retrieve media
-	Media media;
+	private HashtableOH<String, Integer> hash;			// Stores the information of many objects of type ArrayList<String>
+	private ArrayList<String> m;						// Stores the information about one object
+	private int size = 0;								// The size of the hashtable
+	private String filename; 							// The file
+	private ArrayList<ArrayList<Media>> arrayMediaList;	// List that contains media-objects
+	Media media;										// Media-object in order to retrieve media
 
 	/**
-	 * Constructor that creates the hashtable from the file filename
+	 * Konstruktor som skapar en hashtabell från en fil vars namn
+	 * anges som argument för konstruktorn.
 	 * 
-	 * @param filename
-	 *            - file that contains information about the objects
+	 * @param filename - namn på filen som ska läsas in i hashtabellen
+	 *            
 	 */
 	public Hashtable(String filename) {
 		this.filename = filename;
@@ -44,10 +40,9 @@ public class Hashtable {
 	}
 
 	/**
-	 * Returns the number of rows in the file filename
+	 * Returnerar antalet rader i filen som läses in
 	 * 
-	 * @param filename
-	 *            - the file that contains information about the objects
+	 * @param filename - namn på filen som ska läsas in i hashtabellen
 	 * @return size - int
 	 */
 	public int getFileRowsCount(String filename) {
@@ -65,18 +60,25 @@ public class Hashtable {
 	}
 
 	/**
-	 * Reads the text-file filename and creates the hashtable that stores the
-	 * contents of the text-file
+	 * Läser .txt-filen filename och skapar en hashtable som lagrar innehållet
+	 * av .txt-filen
 	 * 
-	 * @param filename
-	 * @return HashtableOH<String, ArrayList<String>> - the hashtable that has
-	 *         been created from the file
+	 * @param filename - namn på filen som ska läsas in i hashtabellen
+	 * @return HashtableOH<String, Integer> - hashtabellen som skapades utav filen
 	 */
 	public HashtableOH<String, Integer> readMedia(String filename) {
 		HashtableOH<String, Integer> res = new HashtableOH<String, Integer>(size);
 		return readMedia(filename, res);
 	}
-
+	
+	/**
+	 * Läser .txt-filen filename och skapar en hashtable som lagrar innehållet
+	 * av .txt-filen
+	 *  
+	 * @param filename - namn på filen som ska läsas in i hashtabellen
+	 * @param hash
+	 * @return HashtableOH<String, Integer> - hashtabellen som skapades utav filen
+	 */
 	public HashtableOH<String, Integer> readMedia(String filename, HashtableOH<String, Integer> hash) {
 		HashtableOH<String, Integer> res = new HashtableOH<String, Integer>(size);
 		res = hash;
@@ -103,6 +105,11 @@ public class Hashtable {
 		return res;
 	}
 
+	/**
+	 * Returnerar ett Media-objekt som motsvarar argumentet key
+	 * @param key - nyckel som används i hashtabellen och motsvarar mediaID
+	 * @return Media
+	 */
 	public Media getMedia(String key) {
 		ArrayList<Media> mediaList = new ArrayList<Media>();
 		mediaList = getMediaList(hash.get(key));
@@ -119,10 +126,9 @@ public class Hashtable {
 	}
 
 	/**
-	 * Returns a ArrayList of type Media of all the medias that are stored
-	 * 
-	 * @param hashIndex
-	 * @return
+	 * Returnerar en ArrayList av typen Media som innehåller all media som
+	 * finns lagrat
+	 * @return ArrayList<Media>
 	 */
 	public ArrayList<Media> getListOfMedia() {
 		ArrayList<Media> tempMediaList = new ArrayList<Media>();
@@ -136,44 +142,26 @@ public class Hashtable {
 		return tempMediaList;
 	}
 
-	public ArrayList<Media> getListOfMedia(int hashIndex) {
-		//ArrayList<Media> clone = new ArrayList<Media>();
-		ArrayList<Media> original = new ArrayList<Media>();
-		original = this.arrayMediaList.get(hashIndex);
-		//for (int i = 0; i < original.size() && original.get(i) != null; i++) {
-			//clone.add(original.get(i));
-		//}
-		return original;
-	}
-
-	public String toString() {
-		String s = "";
-		return s;
-	}
-
-	public boolean doesContain(String key) {
-		return hash.containsKey(key);
-	}
-
+	/**
+	 * Returnerar ifall nykeln finns i hashtabellen
+	 * @param key - av typen String som motsvarar mediaID 
+	 * @return boolean
+	 */
 	public boolean containsMedia(String key) {
 		boolean containsMedia = false;
-		if (doesContain(key)) {
+		if (hash.containsKey(key)) {
 			if (getMedia(key) != null){
 				containsMedia = true;
 			}
 		}
-		
-		System.out.println("return containsMedia()");
-		
 		return containsMedia;
 	}
 
 	/**
-	 * Returns if the media with the specified ID is borrowed or not
-	 * 
-	 * @param key
-	 *            - media ID
-	 * @return boolean - indicates if the media type is borrowed
+	 * Returnerar en boolean som anger ifall Media-objektet med mediaID key 
+	 * är lånad eller inte
+	 * @param key - mediaID
+	 * @return boolean
 	 */
 	public boolean getBorrowedStatus(String key) {
 		boolean isBorrowed = true;
@@ -182,7 +170,13 @@ public class Hashtable {
 		isBorrowed = med.getBorrowedStatus();
 		return isBorrowed;
 	}
-	private HashtableOH<String, Integer> addMedia(Media med, HashtableOH<String, Integer> res) {
+	/**
+	 * 
+	 * @param med
+	 * @param res
+	 * @return
+	 */
+	public HashtableOH<String, Integer> addMedia(Media med, HashtableOH<String, Integer> res) {
 		int hashIndex = res.hashIndex(med.getId());
 		System.out.println("hashIndex: " + hashIndex);
 		System.out.println("med.getId(): " + med.getId());
@@ -200,30 +194,34 @@ public class Hashtable {
 		return res;
 	}
 	
+	/**
+	 * 
+	 * @param hashIndex
+	 * @return
+	 */
 	public ArrayList<Media> getMediaList(int hashIndex){
 		return arrayMediaList.get(hashIndex);
 	}
 
 	/**
-	 * Kräver metod i en annan klass för att kolla om Media original är av typen
-	 * DVD eller Bok Klonar original objektet så att inga referenser finns till
-	 * originalet och returnerar ett helt nytt media objekt som är identiskt so
-	 * originalet
+	 * Kräver metod i en annan klass för att kolla om argumentet av typen Media-objekt 
+	 * är av typen DVD eller Bok. Klonar argumentet så att inga referenser finns till
+	 * originalet och returnerar ett helt nytt media objekt som har identiskt innehåll
+	 * som originalet
 	 * 
-	 * @param original
-	 * @return
+	 * @param original - av typen Media
+	 * @return Media
 	 */
 	private Media cloneMedia(Media original) {
-		Media med = original;
+		Media clone = original;
 		System.out.println("Can't clone me!");
-		return med;
+		return clone;
 	}
 
 	/**
-	 * Checks to see if media is DVD if media is not DVD then it has to be a
-	 * Book
-	 * 
-	 * @param media
+	 * Kollar ifall objektet Media är av typen DVD eller Bok och returnerar en
+	 * boolean
+	 * @param media - av typen String
 	 * @return boolean
 	 */
 	private boolean isDVD(String media) {
@@ -235,6 +233,12 @@ public class Hashtable {
 			return false;
 	}
 
+	/**
+	 * Skapar Media-objektet och returnerar ett nytt Media-objekt 
+	 * och anger att Media-objektet inte är utlånat
+	 * @param contents - av typen ArrayList<String>
+	 * @return Media
+	 */
 	private Media getMedia(ArrayList<String> contents) {
 		if (isDVD(contents.get(0))) {
 			contents.removeFirst();
