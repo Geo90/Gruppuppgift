@@ -113,6 +113,34 @@ public abstract class Media {
 	}
 	
 	/**
+	 * Kollar ifall objektet som förs in som parameter är ett DVD-objekt. Returnerar
+	 * true om objektet är ett DVD-objekt annars false.
+	 * @param obj 
+	 * @return boolean
+	 */
+	public boolean checkIfDVD(Media obj){
+		if(obj instanceof DVD){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * Kollar ifall objektet som förs in som parameter är ett Book-objekt. Returnerar
+	 * true om objektet är ett Book-objekt annars false.
+	 * @param obj
+	 * @return boolean
+	 */
+	public boolean checkIfBook(Media obj){
+		if(obj instanceof Book){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
 	 * Skriver ut en sträng som visar media-objektets egenskaper såsom titel, år etc.
 	 */
 	public String toString(){
