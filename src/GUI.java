@@ -15,9 +15,6 @@ public class GUI {
 	private JTextField logInField, searchField, borrowField, returnField;
 	private JButton logInBtn, searchBtn, borrowBtn, returnBtn, refreshBtn;
 	private JTextArea searchArea, myMediaArea;
-	private ArrayList<TestMem> members;
-	private ArrayList<TestMenjeke> media;
-	private ArrayList<TestMenjeke> myMedia;
 	private Controller controller;
 
 	/**
@@ -92,6 +89,10 @@ public class GUI {
 		borrowField = new JTextField("Borrow Media ID");
 		borrowBtn = new JButton("Borrow");
 		searchArea = new JTextArea(".......", 20, 25);
+		//searchArea.setColumns(600);
+		//searchArea.setRows(1000);
+		//searchArea.setLineWrap(true);
+		//searchArea.setWrapStyleWord(false);
 
 		// Initialize components for Tab3
 		returnField = new JTextField("Return Media ID");
