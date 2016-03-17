@@ -11,7 +11,7 @@ import collections.*;
 
 public class Member {
 	private String memberID, name, phoneNumber;
-	private ArrayList<Media> loanList;
+	private ArrayList<Media> loanList=null;
 	
 	/**
 	 * Konstruerar en låntagare med personuppgifter samt ett ID.

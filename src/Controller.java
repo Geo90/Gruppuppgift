@@ -203,7 +203,9 @@ public class Controller {
 				String input = txtField[2].getText();
 				if (isInLibrary(input) && !(isBorrowed(input))) {
 					if (loan(input)) {
+						System.out.println("input : "+input);
 						user.addLoan(library.getMedia(input));
+						System.out.println("loanList : "+user.getLoanList().toString());
 						JOptionPane.showMessageDialog(null, "Objektet har lagts till i din lånelista.");
 						Iterator<Media> loanIter = user.getLoanList().iterator();
 						Media medi;
