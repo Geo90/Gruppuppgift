@@ -3,7 +3,7 @@ import collections.HashtableOH;
 
 public class TestHashtable {
 
-	public TestHashtable(String filename, Hashtable ht, HashtableOH hash){
+	public TestHashtable(String filename, Hashtable ht){
 		/*-----------------------------------------------
 		 * 
 		 * Testing hashtable operations and retrieval 
@@ -11,18 +11,22 @@ public class TestHashtable {
 		 * 
 		 *-----------------------------------------------
 		 */
+		HashtableOH hash = new HashtableOH(20);
+		hash = ht.readMedia(filename);
+		
 		System.out.println("/*---------------------------------------------------------------------");
 		System.out.println("Testing methods and retrival of information");
 		System.out.println("/*---------------------------------------------------------------------");
 
-		System.out.println("getFileRowsCount(filename)" + ht.getFileRowsCount(filename));
-		System.out.println("hash.isEmpty()" + hash.isEmpty());
+		System.out.println("getFileRowsCount(filename): " + ht.getFileRowsCount(filename));
+		System.out.println("hash.isEmpty(): " + hash.isEmpty());
 
 		System.out.print("hash.list(): ");
 		hash.list();
 
 		System.out.println("/*---------------------------------------------------------------------");
-		System.out.println("Testing keys:");
+		System.out.println("Testing keys...");
+		
 		String[] keys = { "427769", "635492", "874591", "456899", "123938", "775534", "722293", "237729" };
 		for (int i = 0; i < keys.length; i++) {
 			System.out.println("i: " + i);
@@ -32,15 +36,14 @@ public class TestHashtable {
 				System.out.println("arrayMediaList.get(5).get(1).toString(): " + ht.getMediaList(5));
 			}
 		}
-
-		//System.out.println("arrayMediaList: " + arrayMediaList);
-		//System.out.println("arrayMediaList.size(): " + arrayMediaList.size());
+		System.out.println("Testing keys...");
 		System.out.println("hash.get(498582): " + hash.get("498582"));
 		System.out.println("arrayMediaList.get(hash.get(keys[0])): " + ht.getMediaList((int)hash.get("498582")));
 		System.out.println(
 				"arrayMediaList.get(hash.get(keys[0])).get(0): " + ht.getMediaList((int)hash.get(keys[0])).get(0));
 		System.out.println("arrayMediaList.get(hash.get(keys[0])).get(0).getTitle()"
 				+ ht.getMediaList((int)hash.get(keys[0])).get(0).getTitle());
+		System.out.println("testing keys finished");
 		System.out.println();
 
 		ArrayList<Media> tempListOfMedia = null;
@@ -88,7 +91,6 @@ public class TestHashtable {
 						"arrayMediaList.get(hash.get(0000)).get(0): " + ht.getMediaList((int)hash.get("0000")).get(0));
 			} else {
 				System.out.println("NOT THIS MEDIA... searching next...");
-
 			}
 		}
 		System.out.println("testMedia is of type DVD()");
@@ -112,8 +114,9 @@ public class TestHashtable {
 	}
 	
 	public static void main(String[] args){
-		Hashtable ht = new Hashtable("filer/Media.txt");
-		
+		String filename = "filer/Media.txt";
+		Hashtable ht = new Hashtable(filename);
+		TestHashtable tht = new TestHashtable(filename, ht);
 	}
 	
 }
