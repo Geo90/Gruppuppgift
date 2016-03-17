@@ -38,7 +38,6 @@ public class Hashtable {
 	public Hashtable(String filename) {
 		this.filename = filename;
 		size = getFileRowsCount(filename);
-
 		hash = new HashtableOH(size);
 		arrayMediaList = new ArrayList<ArrayList<Media>>(size);
 		hash = readMedia(filename);
@@ -94,7 +93,7 @@ public class Hashtable {
 					m.add((parts[i]));
 				}
 				Media med = getMedia(m);
-				addMedia(med, res);
+				res = addMedia(med, res);
 				text = br.readLine();
 			}
 			br.close();
@@ -105,8 +104,10 @@ public class Hashtable {
 	}
 
 	public Media getMedia(String key) {
-		ArrayList<Media> mediaList = new ArrayList<Media>();
+		mediaList = new ArrayList<Media>();
 		mediaList = arrayMediaList.get(hash.get(key));
+		//System.out.println("getMedia - hash.get(key): " + hash.get(key));
+		//System.out.println("getMedia - arrayMediaList.get(hash.get(key)): " + arrayMediaList.get(hash.get(key)));
 		if (mediaList == null) {
 			media = null;
 			System.out.print("Key does not exist");
@@ -129,10 +130,7 @@ public class Hashtable {
 		ArrayList<Media> tempMediaList = new ArrayList<Media>();
 		for (int i = 0; i < arrayMediaList.size(); i++) {
 			if (arrayMediaList.get(i) != null) {
-				//System.out.println("arrayMediaList.get(i): " + arrayMediaList.get(i));
-				//System.out.println("arrayMediaList.get(i).size: " + arrayMediaList.get(i).size());
-				for (int j = 0; j < arrayMediaList.get(i).size() && arrayMediaList.get(i) != null; j++) {
-					//System.out.println("arrayMediaList.get(i).get(j): " + arrayMediaList.get(i).get(j));
+				for (int j = 0; j < arrayMediaList.get(i).size() && arrayMediaList.get(i).get(j) != null; j++) {
 					tempMediaList.add(arrayMediaList.get(i).get(j));
 				}
 			}
@@ -141,13 +139,13 @@ public class Hashtable {
 	}
 
 	public ArrayList<Media> getListOfMedia(int hashIndex) {
-		ArrayList<Media> clone = new ArrayList<Media>();
+		//ArrayList<Media> clone = new ArrayList<Media>();
 		ArrayList<Media> original = new ArrayList<Media>();
 		original = this.arrayMediaList.get(hashIndex);
-		for (int i = 0; i < original.size() && original.get(i) != null; i++) {
-			clone.add(original.get(i));
-		}
-		return clone;
+		//for (int i = 0; i < original.size() && original.get(i) != null; i++) {
+			//clone.add(original.get(i));
+		//}
+		return original;
 	}
 
 	public String toString() {
@@ -162,9 +160,13 @@ public class Hashtable {
 	public boolean containsMedia(String key) {
 		boolean containsMedia = false;
 		if (doesContain(key)) {
-			if (getMedia(key) != null)
+			if (getMedia(key) != null){
 				containsMedia = true;
+			}
 		}
+		
+		System.out.println("return containsMedia()");
+		
 		return containsMedia;
 	}
 
@@ -182,20 +184,26 @@ public class Hashtable {
 		isBorrowed = med.getBorrowedStatus();
 		return isBorrowed;
 	}
-
-	private void addMedia(Media med, HashtableOH<String, Integer> res) {
+	private HashtableOH<String, Integer> addMedia(Media med, HashtableOH<String, Integer> res) {
 		int hashIndex = res.hashIndex(med.getId());
+		System.out.println("hashIndex: " + hashIndex);
+		System.out.println("med.getId(): " + med.getId());
 		res.put(med.getId(), hashIndex);
-		mediaList = new ArrayList<Media>();
-		mediaList.add(med);
-		if (arrayMediaList.get(hashIndex) == null) {
-			arrayMediaList.add(hashIndex, mediaList);
-			mediaList = arrayMediaList.get(hashIndex);
-		} else {
-			mediaList = getListOfMedia(hashIndex);
+		ArrayList<Media> mediaList = new ArrayList<Media>();
+		if (getMediaList(hashIndex) == null) {
+			System.out.println("List is null");
 			mediaList.add(med);
-			arrayMediaList.add(hashIndex, mediaList);
+			arrayMediaList.set(hashIndex, mediaList);
+		} else {
+			mediaList = getMediaList(hashIndex);
+			mediaList.add(med);
+			arrayMediaList.set(hashIndex, mediaList);
 		}
+		return res;
+	}
+	
+	public ArrayList<Media> getMediaList(int hashIndex){
+		return arrayMediaList.get(hashIndex);
 	}
 
 	/**
@@ -268,9 +276,12 @@ public class Hashtable {
 		System.out.println("Testing keys:");
 		String[] keys = { "427769", "635492", "874591", "456899", "123938", "775534", "722293", "237729" };
 		for (int i = 0; i < keys.length; i++) {
-			System.out.println("hash.containsKey(keys[" + i + "]): " + hash.containsKey(keys[i]));
+			System.out.println("i: " + i);
+			System.out.println("keys[" + i + "]: " + keys[i]); 
 			System.out.println("containsMedia(keys[" + i + "]): " + containsMedia(keys[i]));
-			System.out.println("doesContain(keys[" + i + "]): " + doesContain(keys[i]));
+			if(i==3){
+				System.out.println("arrayMediaList.get(5).get(1).toString(): " + arrayMediaList.get(5));
+			}
 		}
 
 		System.out.println("arrayMediaList: " + arrayMediaList);
@@ -294,7 +305,13 @@ public class Hashtable {
 			if(getListOfMedia().get(i) != null)
 				System.out.println(getListOfMedia().get(i).toString());
 		}
-
+		System.out.println("----------------------------------------------------");
+		System.out.println(arrayMediaList.get(8).get(0).toString());
+		System.out.println(arrayMediaList.get(8).get(1).toString());
+		System.out.println("----------------------------------------------------");
+		System.out.println(getListOfMedia().get(6));
+		System.out.println(getListOfMedia().get(7));
+		System.exit(0);
 		/*-----------------------------------------------
 		 * 
 		 * Testing communication /w media and subclasses
