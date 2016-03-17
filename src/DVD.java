@@ -11,6 +11,9 @@ import collections.ArrayList;
 public class DVD extends Media{
 	private String[] actors;
 	
+	public DVD(){
+		
+	}
 	/**
 	 * Skapar ett DVD-objekt
 	 * @param actors

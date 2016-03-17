@@ -10,6 +10,9 @@ import collections.ArrayList;
 public class Book extends Media{
 	private String author;
 	
+	public Book(){
+		
+	}
 	/**
 	 * Skapar ett Bok-objekt
 	 * @param author Författare
