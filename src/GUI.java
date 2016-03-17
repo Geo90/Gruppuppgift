@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  * This class is responsible for the Graphical User interface.
@@ -19,50 +21,55 @@ public class GUI {
 
 	/**
 	 * Returnerar alla flikar (tabbed panes) i GUI
+	 * 
 	 * @return tabbed panes
 	 */
-	public JTabbedPane getTabs(){
+	public JTabbedPane getTabs() {
 		return theTabbedPane;
 	}
-	
+
 	/**
 	 * Returnerar alla textfields i GUI
-	 * @return textfields 
+	 * 
+	 * @return textfields
 	 */
-	public JTextField[] getTextFields(){
+	public JTextField[] getTextFields() {
 		JTextField[] arr = new JTextField[4];
-		arr[0]=logInField;
-		arr[1]=searchField;
-		arr[2]=borrowField;
-		arr[3]=returnField;
+		arr[0] = logInField;
+		arr[1] = searchField;
+		arr[2] = borrowField;
+		arr[3] = returnField;
 		return arr;
-		
+
 	}
-	
+
 	/**
-	 * Returnerar alla knappar i användargränsnittet 
+	 * Returnerar alla knappar i användargränsnittet
+	 * 
 	 * @return knapparna i användargränsnittet
 	 */
-	public JButton[] getButtons(){
+	public JButton[] getButtons() {
 		JButton[] arr = new JButton[5];
-		arr[0]= logInBtn;
-		arr[1]= searchBtn;
-		arr[2]=	borrowBtn;
-		arr[3]=	returnBtn; 
-		arr[4]= refreshBtn;
+		arr[0] = logInBtn;
+		arr[1] = searchBtn;
+		arr[2] = borrowBtn;
+		arr[3] = returnBtn;
+		arr[4] = refreshBtn;
 		return arr;
 	}
-	
+
 	/**
 	 * Returnerar textarea användargränsnittet
+	 * 
 	 * @return
 	 */
-	public JTextArea[] getJTextArea(){
+	public JTextArea[] getJTextArea() {
 		JTextArea[] arr = new JTextArea[2];
-		arr[0]=searchArea;
-		arr[1]=myMediaArea;
+		arr[0] = searchArea;
+		arr[1] = myMediaArea;
 		return arr;
 	}
+
 	/**
 	 * Constructor that holds JFrame and the panels.
 	 */
@@ -88,18 +95,16 @@ public class GUI {
 		searchBtn = new JButton("Search");
 		borrowField = new JTextField("Borrow Media ID");
 		borrowBtn = new JButton("Borrow");
-		searchArea = new JTextArea(".......", 20, 25);
-		//searchArea.setColumns(600);
-		//searchArea.setRows(1000);
-		//searchArea.setLineWrap(true);
-		//searchArea.setWrapStyleWord(false);
+		searchArea = new JTextArea(".......", 30, 75);
+
+		searchArea.setPreferredSize(new Dimension(30, 75));
 
 		// Initialize components for Tab3
 		returnField = new JTextField("Return Media ID");
 		returnBtn = new JButton("Return Media");
 
 		refreshBtn = new JButton("Refresh");
-		myMediaArea = new JTextArea(".......", 20, 25);
+		myMediaArea = new JTextArea(".......", 30, 75);
 
 		// Initialize panelOne and add components
 		panelOne = new JPanel(new GridBagLayout());
@@ -168,7 +173,7 @@ public class GUI {
 		master.add(theTabbedPane, BorderLayout.CENTER);
 
 		// JFrame settings
-		frame.setSize(650, 600);
+		frame.setSize(900, 750);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
