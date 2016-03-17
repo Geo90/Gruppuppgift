@@ -130,7 +130,12 @@ public class Controller {
 	 * @return boolean Media objektets lånestatus
 	 */
 	public boolean isBorrowed(String key) {
-		return library.getBorrowedStatus(key);
+		if(isInLibrary(key)){
+			return library.getBorrowedStatus(key);
+		}
+		JOptionPane.showMessageDialog(null, "Objektet finns inte i biblioteket.");
+		return false;
+		
 	}
 
 	/**
@@ -193,7 +198,7 @@ public class Controller {
 			
 			
 				if (e.getSource() == buttons[1]) { 
-					boolean contains = library.doesContain(txtField[1].getText());
+					boolean contains = library.containsMedia(txtField[1].getText());
 					if(contains){
 						JOptionPane.showMessageDialog(null, "Finns i biblioteket.");
 					}else{
@@ -208,8 +213,14 @@ public class Controller {
 				
 			//Borrow
 			if (e.getSource() == buttons[2]) {
+				
 				String res = "";
 				String input = txtField[2].getText();
+				if((isBorrowed(input))){
+					JOptionPane.showMessageDialog(null, "Objektet är utlånat");
+				}
+				
+				
 				if (isInLibrary(input) && !(isBorrowed(input))) {
 					if (loan(input)) {
 						System.out.println("input : "+input);
@@ -226,8 +237,9 @@ public class Controller {
 							System.out.println("to be stored in loan string array : "+medi.toString());
 							res += medi.toString()+"\n";
 						}
+						txtArea[1].setText(res);
 					}
-					txtArea[1].setText(res);
+					
 				}
 			}
 			
