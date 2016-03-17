@@ -104,16 +104,14 @@ public class Hashtable {
 	}
 
 	public Media getMedia(String key) {
-		mediaList = new ArrayList<Media>();
-		mediaList = arrayMediaList.get(hash.get(key));
-		//System.out.println("getMedia - hash.get(key): " + hash.get(key));
-		//System.out.println("getMedia - arrayMediaList.get(hash.get(key)): " + arrayMediaList.get(hash.get(key)));
+		ArrayList<Media> mediaList = new ArrayList<Media>();
+		mediaList = getMediaList(hash.get(key));
 		if (mediaList == null) {
 			media = null;
 			System.out.print("Key does not exist");
 		} else {
 			for (int i = 0; i < mediaList.size() - 1 && mediaList.get(i) != null; i++) {
-				if (hash.get(key).equals(mediaList.get(i).getId()))
+				if (key.equals(mediaList.get(i).getId()))
 					media = mediaList.get(i);
 			}
 		}
@@ -309,9 +307,9 @@ public class Hashtable {
 		System.out.println(arrayMediaList.get(8).get(0).toString());
 		System.out.println(arrayMediaList.get(8).get(1).toString());
 		System.out.println("----------------------------------------------------");
-		System.out.println(getListOfMedia().get(6));
-		System.out.println(getListOfMedia().get(7));
-		System.exit(0);
+		System.out.println("getListOfMedia().get(6): "  + getListOfMedia().get(6));
+		System.out.println("getListOfMedia().get(7): " + getListOfMedia().get(7));
+
 		/*-----------------------------------------------
 		 * 
 		 * Testing communication /w media and subclasses
