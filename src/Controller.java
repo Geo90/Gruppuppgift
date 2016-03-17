@@ -172,6 +172,16 @@ public class Controller {
 					tabs.setEnabledAt(2, true);
 					buttons[0].setText("Log out");
 					loggedIn = true;
+					//Read library and display it
+					String list ="";
+					media = library.getListOfMedia();
+					for (int i = 0; i < library.getListOfMedia().size(); i++) {
+						if(library.getListOfMedia().get(i) != null)
+							list += (library.getListOfMedia().get(i).toString()+"\n");
+					}
+					txtArea[0].setText(list); // ska vara media inte lånelista för user
+					
+					
 				} else {
 					JOptionPane.showMessageDialog(null, "Fel ID, prova igen");
 					tabs.setEnabledAt(1, false);
@@ -182,15 +192,14 @@ public class Controller {
 			
 			
 			
-				if (e.getSource() == buttons[1]) { // KAN FIXAS NÄR RÄTT METOD LAGTS IN I Hashtable-klassen
-//					loanList = user.getLoanList(); // ska vara media inte lånelistan för users
-					String list ="";
-					media = library.getListOfMedia();
-					for (int i = 0; i < library.getListOfMedia().size(); i++) {
-						if(library.getListOfMedia().get(i) != null)
-							list += (library.getListOfMedia().get(i).toString()+"\n");
+				if (e.getSource() == buttons[1]) { 
+					boolean contains = library.doesContain(txtField[1].getText());
+					if(contains){
+						JOptionPane.showMessageDialog(null, "Finns i biblioteket.");
+					}else{
+						JOptionPane.showMessageDialog(null, "Finns inte biblioteket.");
 					}
-					txtArea[0].setText(list); // ska vara media inte lånelista för user
+					
 				}
 				
 				
@@ -204,14 +213,18 @@ public class Controller {
 				if (isInLibrary(input) && !(isBorrowed(input))) {
 					if (loan(input)) {
 						System.out.println("input : "+input);
-						user.addLoan(library.getMedia(input));
+						System.out.println("loanList : "+user.getLoanList().toString());
+//						user.addLoan(library.getMedia(input));
 						System.out.println("loanList : "+user.getLoanList().toString());
 						JOptionPane.showMessageDialog(null, "Objektet har lagts till i din lånelista.");
+						
 						Iterator<Media> loanIter = user.getLoanList().iterator();
 						Media medi;
+						
 						while(loanIter.hasNext()){
 							medi = loanIter.next();
-							res += medi.toString();
+							System.out.println("to be stored in loan string array : "+medi.toString());
+							res += medi.toString()+"\n";
 						}
 					}
 					txtArea[1].setText(res);
@@ -222,16 +235,16 @@ public class Controller {
 			
 			if (e.getSource() == buttons[3]) {
 				JOptionPane.showMessageDialog(null, "me3333sage");
-				loanList = user.getLoanList();
-				for (int i = 0; i < loanList.size(); i++) {
-					boolean userHasLoaned = txtField[3].getText().equals(loanList.get(i).getClass().getName());
-					if (userHasLoaned) {
-					    media = library.getListOfMedia();
-						media.add(loanList.get(i)); // myMedia.get(i));
-						loanList.remove(i);
-						txtArea[1].setText(loanList.toString());
-					}
-				}
+//				loanList = user.getLoanList();
+//				for (int i = 0; i < loanList.size(); i++) {
+//					boolean userHasLoaned = txtField[3].getText().equals(loanList.get(i).getClass().getName());
+//					if (userHasLoaned) {
+//					    media = library.getListOfMedia();
+//						media.add(loanList.get(i)); // myMedia.get(i));
+//						loanList.remove(i);
+//						txtArea[1].setText(loanList.toString());
+//					}
+//				}
 			}
 
 			

@@ -11,7 +11,7 @@ import collections.*;
 
 public class Member {
 	private String memberID, name, phoneNumber;
-	private ArrayList<Media> loanList=null;
+	private ArrayList<Media> loanList= new ArrayList<Media>(10);
 	
 	/**
 	 * Konstruerar en låntagare med personuppgifter samt ett ID.
@@ -79,15 +79,8 @@ public class Member {
 	 * @param mediaObj media objektet som ska läggas till i listan
 	 */
 	public void addLoan(Media mediaObj){
-		if(loanList==null){
-			loanList = new ArrayList<Media>();
 			loanList.add(mediaObj);
-		}
-		else{
-			loanList.add(mediaObj);
-		}
 	}
-	
 	/**
 	 * Sköter återlämningen av ett media objekt
 	 * @param mediaObj det media objekt som ska lämnas tillbaka
