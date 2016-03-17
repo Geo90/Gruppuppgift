@@ -127,9 +127,14 @@ public class Hashtable {
 	 */
 	public ArrayList<Media> getListOfMedia() {
 		ArrayList<Media> tempMediaList = new ArrayList<Media>();
-		for (int i = 0; i < arrayMediaList.size() && arrayMediaList.get(i) != null; i++) {
-			for (int j = 0; i < arrayMediaList.get(i).size() && arrayMediaList.get(i).get(j) != null; j++) {
-				tempMediaList.add(arrayMediaList.get(i).get(j));
+		for (int i = 0; i < arrayMediaList.size(); i++) {
+			if (arrayMediaList.get(i) != null) {
+				//System.out.println("arrayMediaList.get(i): " + arrayMediaList.get(i));
+				//System.out.println("arrayMediaList.get(i).size: " + arrayMediaList.get(i).size());
+				for (int j = 0; j < arrayMediaList.get(i).size() && arrayMediaList.get(i) != null; j++) {
+					//System.out.println("arrayMediaList.get(i).get(j): " + arrayMediaList.get(i).get(j));
+					tempMediaList.add(arrayMediaList.get(i).get(j));
+				}
 			}
 		}
 		return tempMediaList;
@@ -181,15 +186,8 @@ public class Hashtable {
 	private void addMedia(Media med, HashtableOH<String, Integer> res) {
 		int hashIndex = res.hashIndex(med.getId());
 		res.put(med.getId(), hashIndex);
-		/*
-		 * System.out.println("addMedia-method:");
-		 * System.out.println("-----------------"); System.out.println(
-		 * "hashIndex: " + hashIndex); System.out.println("hash.isEmpty(): " +
-		 * hash.isEmpty());
-		 */
 		mediaList = new ArrayList<Media>();
 		mediaList.add(med);
-
 		if (arrayMediaList.get(hashIndex) == null) {
 			arrayMediaList.add(hashIndex, mediaList);
 			mediaList = arrayMediaList.get(hashIndex);
@@ -198,7 +196,6 @@ public class Hashtable {
 			mediaList.add(med);
 			arrayMediaList.add(hashIndex, mediaList);
 		}
-		// System.exit(0);
 	}
 
 	/**
@@ -212,8 +209,7 @@ public class Hashtable {
 	 */
 	private Media cloneMedia(Media original) {
 		Media med = original;
-
-		System.exit(0);
+		System.out.println("Can't clone me!");
 		return med;
 	}
 
@@ -259,7 +255,7 @@ public class Hashtable {
 		 *-----------------------------------------------
 		 */
 		System.out.println("/*---------------------------------------------------------------------");
-		System.out.println("Testing operations of the class Hashtable and retrival of information");
+		System.out.println("Testing methods and retrival of information");
 		System.out.println("/*---------------------------------------------------------------------");
 
 		System.out.println("getFileRowsCount(filename)" + getFileRowsCount(filename));
@@ -286,6 +282,18 @@ public class Hashtable {
 		System.out.println("arrayMediaList.get(hash.get(keys[0])).get(0).getTitle()"
 				+ arrayMediaList.get(hash.get(keys[0])).get(0).getTitle());
 		System.out.println();
+
+		ArrayList<Media> tempListOfMedia = null;
+		tempListOfMedia = getListOfMedia();
+
+		System.out.println("tempListOfMedia.size(): " + tempListOfMedia.size());
+
+		System.out.println("Getting library: ");
+		System.out.println("----------------------");
+		for (int i = 0; i < getListOfMedia().size(); i++) {
+			if(getListOfMedia().get(i) != null)
+				System.out.println(getListOfMedia().get(i).toString());
+		}
 
 		/*-----------------------------------------------
 		 * 
@@ -320,6 +328,7 @@ public class Hashtable {
 		System.out.println("testMedia is of type DVD()");
 		System.out.println("med.checkIfBook(med): " + testMedia.checkIfBook(testMedia));
 		System.out.println("med.checkIfBook(med): " + testMedia.checkIfDVD(testMedia));
+		System.out.println("testMedia.toString(): " + testMedia.toString());
 
 		/*-----------------------------------------------
 		 * 
