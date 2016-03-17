@@ -87,13 +87,13 @@ public class GUI {
 		theTabbedPane = new JTabbedPane();
 
 		// Initialize components for LabelOne
-		logInField = new JTextField("Enter ID", 10);
+		logInField = new JTextField("891216-1111", 10);
 		logInBtn = new JButton("Log in");
 
 		// Initialize components for LabelTwo
 		searchField = new JTextField("Search Media ID");
 		searchBtn = new JButton("Search");
-		borrowField = new JTextField("Borrow Media ID");
+		borrowField = new JTextField("834762");
 		borrowBtn = new JButton("Borrow");
 		searchArea = new JTextArea(".......", 30, 75);
 

@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -177,6 +178,10 @@ public class Controller {
 					tabs.setEnabledAt(2, false);
 				}
 			}
+			
+			
+			
+			
 				if (e.getSource() == buttons[1]) { // KAN FIXAS NÄR RÄTT METOD LAGTS IN I Hashtable-klassen
 //					loanList = user.getLoanList(); // ska vara media inte lånelistan för users
 					String list ="";
@@ -187,35 +192,55 @@ public class Controller {
 					}
 					txtArea[0].setText(list); // ska vara media inte lånelista för user
 				}
+				
+				
+				
+				
+				
 			//Borrow
 			if (e.getSource() == buttons[2]) {
+				String res = "";
 				String input = txtField[2].getText();
-				if (isInLibrary(input) && !isBorrowed(input)) {
+				if (isInLibrary(input) && !(isBorrowed(input))) {
 					if (loan(input)) {
+						user.addLoan(library.getMedia(input));
 						JOptionPane.showMessageDialog(null, "Objektet har lagts till i din lånelista.");
-					}
-				}
-
-				if (e.getSource() == buttons[3]) {
-					System.out.println("Sök");
-					loanList = user.getLoanList();
-					for (int i = 0; i < loanList.size(); i++) {
-						boolean userHasLoaned = txtField[3].getText().equals(loanList.get(i).getClass().getName());
-						if (userHasLoaned) {
-						    media = library.getListOfMedia();
-							media.add(loanList.get(i)); // myMedia.get(i));
-							loanList.remove(i);
-							txtArea[1].setText(loanList.toString());
+						Iterator<Media> loanIter = user.getLoanList().iterator();
+						Media medi;
+						while(loanIter.hasNext()){
+							medi = loanIter.next();
+							res += medi.toString();
 						}
 					}
-				}
-
-				if (e.getSource() == buttons[4]) {
-					JOptionPane.showMessageDialog(null, "message");
-					ArrayList<Media> media1 = user.getLoanList();
-					txtArea[1].setText(media1.toString());
+					txtArea[1].setText(res);
 				}
 			}
+			
+			
+			
+			if (e.getSource() == buttons[3]) {
+				JOptionPane.showMessageDialog(null, "me3333sage");
+				loanList = user.getLoanList();
+				for (int i = 0; i < loanList.size(); i++) {
+					boolean userHasLoaned = txtField[3].getText().equals(loanList.get(i).getClass().getName());
+					if (userHasLoaned) {
+					    media = library.getListOfMedia();
+						media.add(loanList.get(i)); // myMedia.get(i));
+						loanList.remove(i);
+						txtArea[1].setText(loanList.toString());
+					}
+				}
+			}
+
+			
+			
+			if (e.getSource() == buttons[4]) {
+				JOptionPane.showMessageDialog(null, "messa444ge");
+				ArrayList<Media> media1 = user.getLoanList();
+				txtArea[1].setText(media1.toString());
+			}
+			
+			
 
 		}
 
