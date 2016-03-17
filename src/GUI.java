@@ -32,7 +32,35 @@ public class GUI {
 	private ArrayList<TestMenjeke> myMedia;
 	private Controller controller;
 	private boolean loggedIn = false;
-
+	
+	
+	public JTabbedPane getTabs(){
+		return theTabbedPane;
+	}
+	public JTextField[] getTextFields(){
+		JTextField[] arr = new JTextField[4];
+		arr[0]=logInField;
+		arr[1]=searchField;
+		arr[2]=borrowField;
+		arr[3]=returnField;
+		return arr;
+		
+	}
+	public JButton[] getButtons(){
+		JButton[] arr = new JButton[5];
+		arr[0]= logInBtn;
+		arr[1]= searchBtn;
+		arr[2]=	borrowBtn;
+		arr[3]=	returnBtn; 
+		arr[4]= refreshBtn;
+		return arr;
+	}
+	public JTextArea[] getJTextArea(){
+		JTextArea[] arr = new JTextArea[2];
+		arr[0]=searchArea;
+		arr[1]=myMediaArea;
+		return arr;
+	}
 	/**
 	 * Constructor that holds JFrame and the panels.
 	 */
