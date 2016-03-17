@@ -245,7 +245,7 @@ public class Controller {
 			
 			
 			if (e.getSource() == buttons[3]) {
-				JOptionPane.showMessageDialog(null, "me3333sage");
+//				JOptionPane.showMessageDialog(null, "me3333sage");
 				String input = txtField[3].getText();
 				boolean found = false;
 				ArrayList<Media> arrList = user.getLoanList();
