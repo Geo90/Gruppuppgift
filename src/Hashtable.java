@@ -37,12 +37,10 @@ public class Hashtable {
 	 */
 	public Hashtable(String filename) {
 		this.filename = filename;
-
 		size = getFileRowsCount(filename);
 
 		hash = new HashtableOH(size);
 		arrayMediaList = new ArrayList<ArrayList<Media>>(size);
-
 		hash = readMedia(filename);
 	}
 
@@ -54,6 +52,7 @@ public class Hashtable {
 	 * @return size - int
 	 */
 	public int getFileRowsCount(String filename) {
+		size = -1;
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"));
 			String text = "";
@@ -95,7 +94,7 @@ public class Hashtable {
 					m.add((parts[i]));
 				}
 				Media med = getMedia(m);
-				addMedia(med);
+				addMedia(med, res);
 				text = br.readLine();
 			}
 			br.close();
@@ -105,7 +104,7 @@ public class Hashtable {
 		return res;
 	}
 
-	public Media getMedia(String key) {
+	private Media getMedia(String key) {
 		ArrayList<Media> mediaList = new ArrayList<Media>();
 		mediaList = arrayMediaList.get(hash.get(key));
 		if (mediaList == null) {
@@ -128,7 +127,6 @@ public class Hashtable {
 	 */
 	public ArrayList<Media> getListOfMedia() {
 		ArrayList<Media> tempMediaList = new ArrayList<Media>();
-
 		for (int i = 0; i < arrayMediaList.size() && arrayMediaList.get(i) != null; i++) {
 			for (int j = 0; i < arrayMediaList.get(i).size() && arrayMediaList.get(i).get(j) != null; j++) {
 				tempMediaList.add(arrayMediaList.get(i).get(j));
@@ -180,9 +178,15 @@ public class Hashtable {
 		return isBorrowed;
 	}
 
-	private void addMedia(Media med) {
-		int hashIndex = hash.hashIndex(med.getId());
-		hash.put(med.getId(), hashIndex);
+	private void addMedia(Media med, HashtableOH<String, Integer> res) {
+		int hashIndex = res.hashIndex(med.getId());
+		res.put(med.getId(), hashIndex);
+		/*
+		 * System.out.println("addMedia-method:");
+		 * System.out.println("-----------------"); System.out.println(
+		 * "hashIndex: " + hashIndex); System.out.println("hash.isEmpty(): " +
+		 * hash.isEmpty());
+		 */
 		mediaList = new ArrayList<Media>();
 		mediaList.add(med);
 
@@ -194,6 +198,7 @@ public class Hashtable {
 			mediaList.add(med);
 			arrayMediaList.add(hashIndex, mediaList);
 		}
+		// System.exit(0);
 	}
 
 	/**
@@ -207,16 +212,8 @@ public class Hashtable {
 	 */
 	private Media cloneMedia(Media original) {
 		Media med = original;
-		/*
-		 * System.out.println("original.equals(med): " + original.equals(med));
-		 * 
-		 * if (original.equals(med)) System.out.println("Is DVD"); else
-		 * System.out.println("Is Book");
-		 * 
-		 * /* Media clone = null; if(original.getType()){ clone = new DVD();
-		 * clone.setId(original.getId()); ... }else{ clone = new Book();
-		 * clone.setId(original.getId()); ... }
-		 */
+
+		System.exit(0);
 		return med;
 	}
 
@@ -276,6 +273,8 @@ public class Hashtable {
 		String[] keys = { "427769", "635492", "874591", "456899", "123938", "775534", "722293", "237729" };
 		for (int i = 0; i < keys.length; i++) {
 			System.out.println("hash.containsKey(keys[" + i + "]): " + hash.containsKey(keys[i]));
+			System.out.println("containsMedia(keys[" + i + "]): " + containsMedia(keys[i]));
+			System.out.println("doesContain(keys[" + i + "]): " + doesContain(keys[i]));
 		}
 
 		System.out.println("arrayMediaList: " + arrayMediaList);
@@ -288,25 +287,6 @@ public class Hashtable {
 				+ arrayMediaList.get(hash.get(keys[0])).get(0).getTitle());
 		System.out.println();
 
-		ArrayList<String> tempList = new ArrayList<String>();
-		tempList.add("0000");
-		tempList.add("De små igelkottarna och hönsen");
-		tempList.add("2017");
-		tempList.add("Igelkotten Kalle");
-		tempList.add("Kråkan Borat");
-		tempList.add("Sköldpaddan Blixten");
-		Media testMedia = new DVD(tempList);
-		addMedia(testMedia);
-
-		for (int i = 0; i < arrayMediaList.get(hash.get("0000")).size()
-				&& arrayMediaList.get(hash.get("0000")).get(i) != null; i++) {
-			if (testMedia.getId() == arrayMediaList.get(hash.get("0000")).get(0).getId()) {
-				System.out.println("arrayMediaList.get(hash.get(0000)).get(0): " + arrayMediaList.get(hash.get("0000")).get(0));
-			} else {
-				System.out.println("NOT THIS MEDIA... searching next...");
-
-			}
-		}
 		/*-----------------------------------------------
 		 * 
 		 * Testing communication /w media and subclasses
@@ -317,17 +297,43 @@ public class Hashtable {
 		System.out.println("Testing communication /w media and subclasses");
 		System.out.println("/*-----------------------------------------------");
 
+		ArrayList<String> tempList = new ArrayList<String>();
+		tempList.add("0000");
+		tempList.add("De små igelkottarna och hönsen");
+		tempList.add("2017");
+		tempList.add("Igelkotten Kalle");
+		tempList.add("Kråkan Borat");
+		tempList.add("Sköldpaddan Blixten");
+		Media testMedia = new DVD(tempList);
+		addMedia(testMedia, hash);
+
+		for (int i = 0; i < arrayMediaList.get(hash.get("0000")).size()
+				&& arrayMediaList.get(hash.get("0000")).get(i) != null; i++) {
+			if (testMedia.getId() == arrayMediaList.get(hash.get("0000")).get(0).getId()) {
+				System.out.println(
+						"arrayMediaList.get(hash.get(0000)).get(0): " + arrayMediaList.get(hash.get("0000")).get(0));
+			} else {
+				System.out.println("NOT THIS MEDIA... searching next...");
+
+			}
+		}
+		System.out.println("testMedia is of type DVD()");
+		System.out.println("med.checkIfBook(med): " + testMedia.checkIfBook(testMedia));
+		System.out.println("med.checkIfBook(med): " + testMedia.checkIfDVD(testMedia));
+
 		/*-----------------------------------------------
 		 * 
 		 * Testing storing same information again in the same hashtable
 		 * 
 		 *-----------------------------------------------
 		 */
-		/*
-		 * int sizetemp = hash.size(); hash.list(); hash = readMedia(filename,
-		 * hash); hash.list(); System.out.println("before: " + sizetemp);
-		 * System.out.println("after: " + hash.size());
-		 */
+
+		int sizetemp = hash.size();
+		hash.list();
+		hash = readMedia(filename, hash);
+		hash.list();
+		System.out.println("before: " + sizetemp);
+		System.out.println("after: " + hash.size());
 	}
 
 	public static void main(String[] args) {
