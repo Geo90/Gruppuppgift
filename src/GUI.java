@@ -1,8 +1,14 @@
 import java.awt.*;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Iterator;
+
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
+import collections.*;
+
 
 /**
  * This class is responsible for the Graphical User interface.
@@ -18,57 +24,7 @@ public class GUI {
 	private JButton logInBtn, searchBtn, borrowBtn, returnBtn, refreshBtn;
 	private JTextArea searchArea, myMediaArea;
 	private Controller controller;
-
-	/**
-	 * Returnerar alla flikar (tabbed panes) i GUI
-	 * 
-	 * @return tabbed panes
-	 */
-	public JTabbedPane getTabs() {
-		return theTabbedPane;
-	}
-
-	/**
-	 * Returnerar alla textfields i GUI
-	 * 
-	 * @return textfields
-	 */
-	public JTextField[] getTextFields() {
-		JTextField[] arr = new JTextField[4];
-		arr[0] = logInField;
-		arr[1] = searchField;
-		arr[2] = borrowField;
-		arr[3] = returnField;
-		return arr;
-
-	}
-
-	/**
-	 * Returnerar alla knappar i användargränsnittet
-	 * 
-	 * @return knapparna i användargränsnittet
-	 */
-	public JButton[] getButtons() {
-		JButton[] arr = new JButton[5];
-		arr[0] = logInBtn;
-		arr[1] = searchBtn;
-		arr[2] = borrowBtn;
-		arr[3] = returnBtn;
-		arr[4] = refreshBtn;
-		return arr;
-	}
-
-	/**
-	 * Returnerar textarea användargränsnittet
-	 * 
-	 * @return
-	 */
-	public JTextArea[] getJTextArea() {
-		JTextArea[] arr = new JTextArea[2];
-		arr[0] = searchArea;
-		arr[1] = myMediaArea;
-		return arr;
-	}
+	private boolean loggedIn = false;
 
 	/**
 	 * Constructor that holds JFrame and the panels.
@@ -182,9 +138,150 @@ public class GUI {
 		this.theTabbedPane.setEnabledAt(1, false);
 		this.theTabbedPane.setEnabledAt(2, false);
 
+		initializeButtonListener();
+	}
+	
+	
+	/**
+	 * This method adds listeners to our buttons
+	 */
+	private void initializeButtonListener() {
+		ButtonListener listener = new ButtonListener();
+		logInBtn.addActionListener(listener);
+		searchBtn.addActionListener(listener);
+		borrowBtn.addActionListener(listener);
+		returnBtn.addActionListener(listener);
+		refreshBtn.addActionListener(listener);
 	}
 
 	public void setController(Controller controller) {
 		this.controller = controller;
+	}
+	
+	private class ButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {			
+			ArrayList<Media> loanList;
+			ArrayList<Media> media;
+			
+			if (e.getSource() == logInBtn) {
+				if (loggedIn) {
+					theTabbedPane.setEnabledAt(1, false);
+					theTabbedPane.setEnabledAt(2, false);
+					logInBtn.setText("Log in");
+					//logOut();
+					logInField.setText("");
+					loggedIn = false;
+					
+				} else if (controller.validUser(logInField.getText()) && !loggedIn) {
+					System.out.println("kommer in i else if satsen");
+					theTabbedPane.setEnabledAt(1, true);
+					theTabbedPane.setEnabledAt(2, true);
+					logInBtn.setText("Log out");
+					loggedIn = true;
+					//Read library and display it
+					String list ="";
+					media = controller.getListOfMedia();
+					for (int i = 0; i < controller.getListOfMedia().size(); i++) {
+						if(controller.getListOfMedia().get(i) != null)
+							list += (controller.getListOfMedia().get(i).toString()+"\n");
+					}
+					searchArea.setText(list); // ska vara media inte lånelista för user
+				} else {
+					JOptionPane.showMessageDialog(null, "Fel ID, prova igen");
+					theTabbedPane.setEnabledAt(1, false);
+					theTabbedPane.setEnabledAt(2, false);
+				}
+			}
+			
+				if (e.getSource() == searchBtn) { 
+					boolean contains = controller.containsMedia(searchField.getText());
+					if(contains){
+						JOptionPane.showMessageDialog(null, "Finns i biblioteket.");
+					}else{
+						JOptionPane.showMessageDialog(null, "Finns inte biblioteket.");
+					}	
+				}
+	
+			//Borrow
+			if (e.getSource() == borrowBtn) {
+				
+				String res = "";
+				String input = borrowField.getText();
+				if((controller.isBorrowed(input))){
+					JOptionPane.showMessageDialog(null, "Objektet är utlånat");
+				}
+				if (controller.isInLibrary(input) && !(controller.isBorrowed(input))) {
+					if (controller.loan(input)) {
+						System.out.println("input : "+input);
+						System.out.println("loanList : "+ controller.getLoanList().toString());
+//						user.addLoan(library.getMedia(input));
+						System.out.println("loanList : "+ controller.getLoanList().toString());
+						JOptionPane.showMessageDialog(null, "Objektet har lagts till i din lånelista.");
+						
+						Iterator<Media> loanIter = controller.getLoanList().iterator();
+						Media medi;
+						
+						while(loanIter.hasNext()){
+							medi = loanIter.next();
+							System.out.println("to be stored in loan string array : "+medi.toString());
+							res += medi.toString()+"\n";
+						}
+						myMediaArea.setText(res);
+					}
+				}
+			}
+
+			if (e.getSource() == returnBtn) {
+//				JOptionPane.showMessageDialog(null, "me3333sage");
+				String input = returnField.getText();
+				boolean found = false;
+				ArrayList<Media> arrList = controller.getLoanList();
+				for(int i = 0; i <arrList.size();i++){
+					if(arrList.get(i)!=null){
+						if(arrList.get(i).getId().equals(input)){
+							found = true;
+							//TA BORT OBJEKT
+							arrList.remove(i);
+							//SÄTT BORROWED STATUS TILL FALSE
+							controller.setBorrowedStatus(input, false);
+								
+							Iterator<Media> loanIter = controller.getLoanList().iterator();
+							Media medi;
+							String res2="";
+							while(loanIter.hasNext()){
+								medi = loanIter.next();
+								System.out.println("to be stored in loan string array : "+medi.toString());
+								res2 += medi.toString()+"\n";
+							}
+							myMediaArea.setText(res2);
+						}
+					}	
+				}
+				if(!found){
+					JOptionPane.showMessageDialog(null, "Du har inte lånat detta objekt.");
+				}
+//				loanList = user.getLoanList();
+//				for (int i = 0; i < loanList.size(); i++) {
+//					boolean userHasLoaned = txtField[3].getText().equals(loanList.get(i).getClass().getName());
+//					if (userHasLoaned) {
+//					    media = library.getListOfMedia();
+//						media.add(loanList.get(i)); // myMedia.get(i));
+//						loanList.remove(i);
+//						txtArea[1].setText(loanList.toString());
+//					}
+//				}
+				
+				//LAGT TILL DETTA!!! ISTÄLLET FÖR REFRESH BUTTON
+				ArrayList<Media> media1 = controller.getLoanList();
+				myMediaArea.setText(media1.toString());
+			}
+
+			if (e.getSource() == refreshBtn) {
+				JOptionPane.showMessageDialog(null, "messa444ge");
+				ArrayList<Media> media1 = controller.getLoanList();
+				myMediaArea.setText(media1.toString());
+			}
+		}
 	}
 }

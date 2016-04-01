@@ -23,7 +23,7 @@ public class Controller {
 	private Hashtable library;
 	private GUI gui;
 	private Member user;
-	private boolean loggedIn;
+
 	/**
 	 * En konstruktor som initierar låntagarna, biblioteket och användargränssnittet
 	 * @param memberTree trädet med låntagarna
@@ -34,7 +34,6 @@ public class Controller {
 		this.gui = gui;
 		this.library = library;
 		this.memberTree = memberTree;
-		initializeButtonListener();
 		gui.setController(this);
 	}
 
@@ -100,10 +99,9 @@ public class Controller {
 		}
 	}
 
-//	public String[] getLibrary() {
-//		ArrayList<Media> lib = library.getListOfMedia(hashIndex); 
-//															
-//	}
+	public void setBorrowedStatus(String key, boolean status){
+		library.setBorrowedStatus(key, status);
+	}
 
 	/**
 	 * Sätter controllerns användare till null.
@@ -137,168 +135,20 @@ public class Controller {
 		return false;
 		
 	}
-
+	
+	public ArrayList<Media> getListOfMedia(){
+		return library.getListOfMedia();
+	}
+	
 	/**
-	 * This method adds listeners to our buttons
+	 * Returnerar en lista över utlånade media objekt
+	 * @return lista med utlånade media objekt
 	 */
-	private void initializeButtonListener() {
-		ButtonListener listener = new ButtonListener();
-		JButton[] buttons = gui.getButtons();
-		buttons[0].addActionListener(listener);
-		buttons[1].addActionListener(listener);
-		buttons[2].addActionListener(listener);
-		buttons[3].addActionListener(listener);
-		buttons[4].addActionListener(listener);
+	public ArrayList<Media> getLoanList(){
+		return user.getLoanList();
 	}
-
-	private class ButtonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			ArrayList<Media> loanList;
-			ArrayList<Media> media;
-			JTextField[] txtField = gui.getTextFields();
-			JTextArea[] txtArea = gui.getJTextArea();
-			JButton[] buttons = gui.getButtons();
-			JTabbedPane tabs = gui.getTabs();
-			
-			if (e.getSource() == buttons[0]) {
-				if (loggedIn) {
-					tabs.setEnabledAt(1, false);
-					tabs.setEnabledAt(2, false);
-					buttons[0].setText("Log in");
-					//logOut();
-					txtField[0].setText("");
-					loggedIn = false;
-					
-				} else if (validUser(txtField[0].getText()) && !loggedIn) {
-					System.out.println("kommer in i else if satsen");
-					tabs.setEnabledAt(1, true);
-					tabs.setEnabledAt(2, true);
-					buttons[0].setText("Log out");
-					loggedIn = true;
-					//Read library and display it
-					String list ="";
-					media = library.getListOfMedia();
-					for (int i = 0; i < library.getListOfMedia().size(); i++) {
-						if(library.getListOfMedia().get(i) != null)
-							list += (library.getListOfMedia().get(i).toString()+"\n");
-					}
-					txtArea[0].setText(list); // ska vara media inte lånelista för user
-					
-					
-				} else {
-					JOptionPane.showMessageDialog(null, "Fel ID, prova igen");
-					tabs.setEnabledAt(1, false);
-					tabs.setEnabledAt(2, false);
-				}
-			}
-			
-			
-			
-			
-				if (e.getSource() == buttons[1]) { 
-					boolean contains = library.containsMedia(txtField[1].getText());
-					if(contains){
-						JOptionPane.showMessageDialog(null, "Finns i biblioteket.");
-					}else{
-						JOptionPane.showMessageDialog(null, "Finns inte biblioteket.");
-					}
-					
-				}
-				
-				
-				
-				
-				
-			//Borrow
-			if (e.getSource() == buttons[2]) {
-				
-				String res = "";
-				String input = txtField[2].getText();
-				if((isBorrowed(input))){
-					JOptionPane.showMessageDialog(null, "Objektet är utlånat");
-				}
-				
-				
-				if (isInLibrary(input) && !(isBorrowed(input))) {
-					if (loan(input)) {
-						System.out.println("input : "+input);
-						System.out.println("loanList : "+user.getLoanList().toString());
-//						user.addLoan(library.getMedia(input));
-						System.out.println("loanList : "+user.getLoanList().toString());
-						JOptionPane.showMessageDialog(null, "Objektet har lagts till i din lånelista.");
-						
-						Iterator<Media> loanIter = user.getLoanList().iterator();
-						Media medi;
-						
-						while(loanIter.hasNext()){
-							medi = loanIter.next();
-							System.out.println("to be stored in loan string array : "+medi.toString());
-							res += medi.toString()+"\n";
-						}
-						txtArea[1].setText(res);
-					}
-					
-				}
-			}
-			
-			
-			
-			if (e.getSource() == buttons[3]) {
-//				JOptionPane.showMessageDialog(null, "me3333sage");
-				String input = txtField[3].getText();
-				boolean found = false;
-				ArrayList<Media> arrList = user.getLoanList();
-				for(int i = 0; i <arrList.size();i++){
-					if(arrList.get(i)!=null){
-						if(arrList.get(i).getId().equals(input)){
-							found = true;
-							//TA BORT OBJEKT
-							arrList.remove(i);
-							//SÄTT BORROWED STATUS TILL FALSE
-							library.setBorrowedStatus(input, false);
-							
-							
-							Iterator<Media> loanIter = user.getLoanList().iterator();
-							Media medi;
-							String res2="";
-							while(loanIter.hasNext()){
-								medi = loanIter.next();
-								System.out.println("to be stored in loan string array : "+medi.toString());
-								res2 += medi.toString()+"\n";
-							}
-							txtArea[1].setText(res2);
-						}
-					}
-					
-				}
-				if(!found){
-					JOptionPane.showMessageDialog(null, "Du har inte lånat detta objekt.");
-				}
-//				loanList = user.getLoanList();
-//				for (int i = 0; i < loanList.size(); i++) {
-//					boolean userHasLoaned = txtField[3].getText().equals(loanList.get(i).getClass().getName());
-//					if (userHasLoaned) {
-//					    media = library.getListOfMedia();
-//						media.add(loanList.get(i)); // myMedia.get(i));
-//						loanList.remove(i);
-//						txtArea[1].setText(loanList.toString());
-//					}
-//				}
-			}
-
-			
-			
-			if (e.getSource() == buttons[4]) {
-				JOptionPane.showMessageDialog(null, "messa444ge");
-				ArrayList<Media> media1 = user.getLoanList();
-				txtArea[1].setText(media1.toString());
-			}
-			
-			
-
-		}
-
+	
+	public boolean containsMedia(String key){
+		return library. containsMedia(key);
 	}
-
 }
