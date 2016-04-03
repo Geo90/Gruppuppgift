@@ -2,13 +2,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
-
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
-
 import collections.*;
-
 
 /**
  * This class is responsible for the Graphical User interface.
@@ -21,7 +16,7 @@ public class GUI {
 	private JTabbedPane theTabbedPane;
 	private JPanel master, panelOne, panelTwo, panelThree;
 	private JTextField logInField, searchField, borrowField, returnField;
-	private JButton logInBtn, searchBtn, borrowBtn, returnBtn, refreshBtn;
+	private JButton logInBtn, searchBtn, borrowBtn, returnBtn;
 	private JTextArea searchArea, myMediaArea;
 	private Controller controller;
 	private boolean loggedIn = false;
@@ -48,19 +43,22 @@ public class GUI {
 
 		// Initialize components for LabelTwo
 		searchField = new JTextField("Search Media ID");
+		searchField.setPreferredSize(new Dimension(100, 20));
 		searchBtn = new JButton("Search");
 		borrowField = new JTextField("834762");
+		borrowField.setPreferredSize(new Dimension(100, 20));
 		borrowBtn = new JButton("Borrow");
 		searchArea = new JTextArea(".......", 20, 45);
+		searchArea.setEditable(false);
 		JScrollPane scrollp = new JScrollPane(searchArea);
-
 
 		// Initialize components for Tab3
 		returnField = new JTextField("Return Media ID");
+		returnField.setPreferredSize(new Dimension(100, 20));
 		returnBtn = new JButton("Return Media");
 
-		refreshBtn = new JButton("Refresh");
 		myMediaArea = new JTextArea(".......", 20, 45);
+		myMediaArea.setEditable(false);
 		JScrollPane scrollp2 = new JScrollPane(myMediaArea);
 
 		// Initialize panelOne and add components
@@ -117,10 +115,6 @@ public class GUI {
 		gbc.gridy = 3;
 		panelThree.add(scrollp2, gbc);
 
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		panelThree.add(refreshBtn, gbc);
-
 		// Add panelOne and panelTwo to theTabbedPane and name them
 		theTabbedPane.add("Log In", panelOne);
 		theTabbedPane.add("Search & Borrow", panelTwo);
@@ -140,8 +134,7 @@ public class GUI {
 
 		initializeButtonListener();
 	}
-	
-	
+
 	/**
 	 * This method adds listeners to our buttons
 	 */
@@ -151,81 +144,70 @@ public class GUI {
 		searchBtn.addActionListener(listener);
 		borrowBtn.addActionListener(listener);
 		returnBtn.addActionListener(listener);
-		refreshBtn.addActionListener(listener);
 	}
 
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
-	
+
 	private class ButtonListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {			
+		public void actionPerformed(ActionEvent e) {
 			ArrayList<Media> loanList;
 			ArrayList<Media> media;
-			
+
 			if (e.getSource() == logInBtn) {
 				if (loggedIn) {
 					theTabbedPane.setEnabledAt(1, false);
 					theTabbedPane.setEnabledAt(2, false);
 					logInBtn.setText("Log in");
-					//logOut();
+					// logOut();
 					logInField.setText("");
 					loggedIn = false;
-					
+
 				} else if (controller.validUser(logInField.getText()) && !loggedIn) {
-					System.out.println("kommer in i else if satsen");
 					theTabbedPane.setEnabledAt(1, true);
 					theTabbedPane.setEnabledAt(2, true);
 					logInBtn.setText("Log out");
 					loggedIn = true;
-					//Read library and display it
-					String list ="";
+					// Read library and display it
+					String list = "";
 					media = controller.getListOfMedia();
 					for (int i = 0; i < controller.getListOfMedia().size(); i++) {
-						if(controller.getListOfMedia().get(i) != null)
-							list += (controller.getListOfMedia().get(i).toString()+"\n");
+						if (controller.getListOfMedia().get(i) != null)
+							list += (controller.getListOfMedia().get(i).toString() + "\n");
 					}
-					searchArea.setText(list); // ska vara media inte lånelista för user
+					searchArea.setText(list);
 				} else {
 					JOptionPane.showMessageDialog(null, "Fel ID, prova igen");
 					theTabbedPane.setEnabledAt(1, false);
 					theTabbedPane.setEnabledAt(2, false);
 				}
 			}
-			
-				if (e.getSource() == searchBtn) { 
-					boolean contains = controller.containsMedia(searchField.getText());
-					if(contains){
-						JOptionPane.showMessageDialog(null, "Finns i biblioteket.");
-					}else{
-						JOptionPane.showMessageDialog(null, "Finns inte biblioteket.");
-					}	
+
+			if (e.getSource() == searchBtn) {
+				boolean contains = controller.containsMedia(searchField.getText());
+				if (contains) {
+					JOptionPane.showMessageDialog(null, "Finns i biblioteket.");
+				} else {
+					JOptionPane.showMessageDialog(null, "Finns inte biblioteket.");
 				}
-	
-			//Borrow
+			}
+
 			if (e.getSource() == borrowBtn) {
-				
 				String res = "";
 				String input = borrowField.getText();
-				if((controller.isBorrowed(input))){
+				if ((controller.isBorrowed(input))) {
 					JOptionPane.showMessageDialog(null, "Objektet är utlånat");
 				}
 				if (controller.isInLibrary(input) && !(controller.isBorrowed(input))) {
 					if (controller.loan(input)) {
-						System.out.println("input : "+input);
-						System.out.println("loanList : "+ controller.getLoanList().toString());
-//						user.addLoan(library.getMedia(input));
-						System.out.println("loanList : "+ controller.getLoanList().toString());
-						JOptionPane.showMessageDialog(null, "Objektet har lagts till i din lånelista.");
-						
+						JOptionPane.showMessageDialog(null, "Objektet har lagts till i lånelistan");
 						Iterator<Media> loanIter = controller.getLoanList().iterator();
 						Media medi;
-						
-						while(loanIter.hasNext()){
+						while (loanIter.hasNext()) {
 							medi = loanIter.next();
-							System.out.println("to be stored in loan string array : "+medi.toString());
-							res += medi.toString()+"\n";
+							res += medi.toString() + "\n";
 						}
 						myMediaArea.setText(res);
 					}
@@ -233,54 +215,32 @@ public class GUI {
 			}
 
 			if (e.getSource() == returnBtn) {
-//				JOptionPane.showMessageDialog(null, "me3333sage");
 				String input = returnField.getText();
 				boolean found = false;
 				ArrayList<Media> arrList = controller.getLoanList();
-				for(int i = 0; i <arrList.size();i++){
-					if(arrList.get(i)!=null){
-						if(arrList.get(i).getId().equals(input)){
+				for (int i = 0; i < arrList.size(); i++) {
+					if (arrList.get(i) != null) {
+						if (arrList.get(i).getId().equals(input)) {
 							found = true;
-							//TA BORT OBJEKT
+							// TA BORT OBJEKT
 							arrList.remove(i);
-							//SÄTT BORROWED STATUS TILL FALSE
+							// SÄTT BORROWED STATUS TILL FALSE
 							controller.setBorrowedStatus(input, false);
-								
 							Iterator<Media> loanIter = controller.getLoanList().iterator();
 							Media medi;
-							String res2="";
-							while(loanIter.hasNext()){
+							String res2 = "";
+							while (loanIter.hasNext()) {
 								medi = loanIter.next();
-								System.out.println("to be stored in loan string array : "+medi.toString());
-								res2 += medi.toString()+"\n";
+								res2 += medi.toString() + "\n";
 							}
 							myMediaArea.setText(res2);
 						}
-					}	
+					}
 				}
-				if(!found){
+				if (!found) {
 					JOptionPane.showMessageDialog(null, "Du har inte lånat detta objekt.");
 				}
-//				loanList = user.getLoanList();
-//				for (int i = 0; i < loanList.size(); i++) {
-//					boolean userHasLoaned = txtField[3].getText().equals(loanList.get(i).getClass().getName());
-//					if (userHasLoaned) {
-//					    media = library.getListOfMedia();
-//						media.add(loanList.get(i)); // myMedia.get(i));
-//						loanList.remove(i);
-//						txtArea[1].setText(loanList.toString());
-//					}
-//				}
-				
-				//LAGT TILL DETTA!!! ISTÄLLET FÖR REFRESH BUTTON
-				ArrayList<Media> media1 = controller.getLoanList();
-				myMediaArea.setText(media1.toString());
-			}
 
-			if (e.getSource() == refreshBtn) {
-				JOptionPane.showMessageDialog(null, "messa444ge");
-				ArrayList<Media> media1 = controller.getLoanList();
-				myMediaArea.setText(media1.toString());
 			}
 		}
 	}

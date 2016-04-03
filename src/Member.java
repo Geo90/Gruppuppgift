@@ -88,7 +88,6 @@ public class Member {
 	public void returnLoan(Media mediaObj){
 		int indexOf =(loanList.indexOf(mediaObj));
 		if(indexOf != -1){
-			//loanList.get(indexOf).//mediaObj//.setBorrowedStatus(false);
 			loanList.remove(indexOf);
 			JOptionPane.showMessageDialog(null, "mediaObj.setBorrowedStatus(false)");
 		}

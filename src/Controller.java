@@ -1,13 +1,4 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Iterator;
-
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
+import javax.swing.*;
 import collections.*;
 
 /**
@@ -43,17 +34,12 @@ public class Controller {
 	 * @return true om giltig låntagare annars false
 	 */
 	public boolean validUser(String memberID) {
-		try {
-			if (!memberTree.checkUser(memberID)) {
-				throw new InvalidUserException("memberID: " + memberID + " has no user account in this system.");
-			} else {
-				this.user = memberTree.getUser(memberID);
-				return true;
-			}
-		} catch (InvalidUserException exception) {
-			JOptionPane.showMessageDialog(null, "Fel användarnamn");
+		if (!memberTree.checkUser(memberID)) {
+			return false;
+		} else {
+			this.user = memberTree.getUser(memberID);
+			return true;
 		}
-		return false;
 	}
 
 	/**
